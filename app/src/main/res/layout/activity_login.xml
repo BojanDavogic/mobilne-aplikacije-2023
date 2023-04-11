@@ -129,6 +129,9 @@
             android:textColor="@color/zuta"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40px"
+            android:clickable="true"
+            android:onClick=""
+            tools:ignore="OnClick"
             />
 
     </RelativeLayout>

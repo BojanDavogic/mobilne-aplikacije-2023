@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.example.slagalica.MainActivity;
 import com.example.slagalica.R;
 
 public class Login extends AppCompatActivity {
@@ -58,11 +59,20 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        TextView textView = findViewById(R.id.btnRegistrujSe);
-        textView.setOnClickListener(new View.OnClickListener() {
+        TextView tvRegistrujSe = findViewById(R.id.btnRegistrujSe);
+        tvRegistrujSe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+            }
+        });
+
+        TextView tvNastaviKaoGost = findViewById(R.id.btnGost);
+        tvNastaviKaoGost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, MainActivity.class);
                 startActivity(intent);
             }
         });

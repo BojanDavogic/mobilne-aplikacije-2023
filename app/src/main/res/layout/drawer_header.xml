@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:orientation="vertical"
+    android:background="@color/plava"
+    android:padding="10dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:gravity="top"
+    android:id="@+id/relativeDrawer">
+
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/relativeHeader1"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/person"
+            android:layout_marginRight="20dp"
+            android:contentDescription="Opis slike"
+            android:background="@color/pozadina"
+            />
+
+        <TextView
+            android:id="@+id/txtIme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Marko Markovic"
+            android:gravity="left"
+            android:textSize="30dp"
+            android:layout_toRightOf="@id/avatar"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader2"
+        android:layout_width="200px"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relativeHeader1"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/brojTokena"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="20dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"/>
+
+        <ImageView
+            android:id="@+id/tokenImage"
+            android:layout_width="80px"
+            android:layout_height="70px"
+            android:layout_toRightOf="@id/brojTokena"
+            android:src="@drawable/coin"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader3"
+        android:layout_width="200px"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relativeHeader1"
+        android:layout_toRightOf="@id/relativeHeader2">
+
+        <TextView
+            android:id="@+id/brojPera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="200"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/peroImage"
+            android:layout_width="80px"
+            android:layout_height="70px"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/brojPera"
+            android:src="@drawable/feather" />
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
