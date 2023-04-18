@@ -13,7 +13,6 @@ import android.widget.ToggleButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
