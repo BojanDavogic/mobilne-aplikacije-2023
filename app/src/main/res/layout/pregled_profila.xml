@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pozadina">
+
+    <TextView
+        android:id="@+id/profil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profil"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp"/>
+    <ImageView
+        android:id="@+id/slikaKorisnika"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/profil"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/human_face"
+        android:background="@drawable/customborder"
+        android:layout_marginBottom="5dp"
+        />
+    <TextView
+        android:id="@+id/izmenaSlike"
+        android:layout_below="@id/slikaKorisnika"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:textSize="18dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/zuta"
+        android:text="Izmeni profilnu sliku"/>
+    <RelativeLayout
+        android:id="@+id/tokeniZvezdice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/izmenaSlike"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp">
+    <RelativeLayout
+
+        android:id="@+id/relativeHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:id="@+id/brojTokena"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:textColor="@color/white"/>
+
+        <ImageView
+            android:id="@+id/tokenImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@id/brojTokena"
+            android:src="@drawable/token64"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/relativeHeader2">
+
+        <TextView
+            android:id="@+id/brojZvezdica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="20"
+            android:layout_marginRight="6dp"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:id="@+id/zvezdicaImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@id/brojZvezdica"
+
+            android:src="@drawable/zvezda64" />
+    </RelativeLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/korImeTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Korisničko ime:"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:layout_below="@id/tokeniZvezdice"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp"/>
+    <TextView
+        android:layout_below="@id/korImeTxt"
+        android:id="@+id/korIme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="MarkoMarkovic"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:background="@drawable/customborder"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"/>
+    <TextView
+        android:id="@+id/emailTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email:"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:layout_below="@id/korIme"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp"/>
+    <TextView
+        android:layout_below="@id/emailTxt"
+        android:id="@+id/emailKorisnika"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="markomarkovic@gmail.com"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:background="@drawable/customborder"
+        android:layout_marginHorizontal="20dp"/>
+
+</RelativeLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".aktivnosti.Register"
+    android:background="@color/pozadina"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:id="@+id/registracija"
+        android:text="Registracija"
+        android:textSize="100px"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@color/zuta"/>
+
+    <ImageView
+        android:layout_width="300px"
+        android:layout_height="300px"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo_white"
+        android:layout_marginTop="40px"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblEmail"
+        android:text="Email:"
+        android:textSize="55px"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:layout_marginTop="50px"
+        android:fontFamily="serif"
+        android:textStyle="italic"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtEmail"
+        android:background="@drawable/customborder"
+        android:ems="20"
+        android:hint="example@mail.com"
+        android:gravity="center"
+        android:layout_marginTop="20px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px"
+        android:textColorHint="@color/siva"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblKorisnickoIme"
+        android:text="Korisničko ime:"
+        android:textSize="55px"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:layout_marginTop="20px"
+        android:fontFamily="serif"
+        android:textStyle="italic"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtKorisnickoIme"
+        android:background="@drawable/customborder"
+        android:ems="20"
+        android:gravity="center"
+        android:layout_marginTop="20px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px"
+        android:textColorHint="@color/siva"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblLozinka"
+        android:text="Lozinka:"
+        android:textSize="55px"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:layout_marginTop="20px"
+        android:fontFamily="serif"
+        android:textStyle="italic"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtLozinka"
+        android:inputType="textPassword"
+        android:drawableRight="@drawable/visibility_off"
+        android:longClickable="false"
+        android:background="@drawable/customborder"
+        android:ems="20"
+        android:gravity="center"
+        android:layout_marginTop="20px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblPonovljenaLozinka"
+        android:text="Ponovljena lozinka:"
+        android:textSize="55px"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:layout_marginTop="20px"
+        android:fontFamily="serif"
+        android:textStyle="italic"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtPonovljenaLozinka"
+        android:inputType="textPassword"
+        android:drawableRight="@drawable/visibility_off"
+        android:longClickable="false"
+        android:background="@drawable/customborder"
+        android:ems="20"
+        android:gravity="center"
+        android:layout_marginTop="20px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnRegister"
+        android:backgroundTint="@color/pozadina"
+        android:foreground="@drawable/button_border"
+        android:text="Registruj se"
+        android:layout_marginTop="100px"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/zuta"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lblText"
+        android:text="Već imaš korisnički nalog?"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30px"/>
+
+    <TextView
+        android:id="@+id/btnPrijaviSe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prijavi se"
+        android:textColor="@color/teal_200"
+        android:layout_gravity="center_horizontal"
+        android:textSize="45px"
+        android:clickable="true"
+        android:onClick=""
+        tools:ignore="OnClick" />
+</LinearLayout>

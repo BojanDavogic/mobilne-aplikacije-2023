@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:orientation="vertical"
+    android:background="@color/plava"
+    android:padding="10dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:gravity="top"
+    android:id="@+id/relativeDrawer">
+
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/relativeHeader1"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="60dp"
+            android:layout_height="70dp"
+            android:src="@drawable/human_face"
+            android:layout_marginRight="20dp"
+            android:contentDescription="Opis slike"
+            android:background="@color/pozadina"
+            />
+
+        <TextView
+            android:id="@+id/txtIme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Marko Markovic"
+            android:gravity="left"
+            android:textSize="30dp"
+            android:layout_toRightOf="@id/avatar"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relativeHeader1"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:id="@+id/brojTokena"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:textColor="@color/white"/>
+
+        <ImageView
+            android:id="@+id/tokenImage"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toRightOf="@id/brojTokena"
+            android:src="@drawable/token"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relativeHeader1"
+        android:layout_toRightOf="@id/relativeHeader2">
+
+        <TextView
+            android:id="@+id/brojZvezdica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="20"
+            android:layout_marginRight="6dp"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/zvezdicaImage"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toRightOf="@id/brojZvezdica"
+            android:src="@drawable/zvezda" />
+    </RelativeLayout>
+</RelativeLayout>

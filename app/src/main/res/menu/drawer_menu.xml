@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/pocetnaStranica"
+            android:title="Početna stranica"
+            android:icon="@drawable/home_icon"/>
+
+    </group>
+
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/profil"
+            android:title="Profil"
+            android:icon="@drawable/profile_icon"
+            />
+
+    </group>
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/statistika"
+            android:title="Statistika"
+            android:icon="@drawable/statistic_icon"/>
+
+        <item
+            android:id="@+id/nedeljnaLista"
+            android:title="Nedeljna lista"
+            android:icon="@drawable/list_icon"
+            />
+
+        <item
+            android:id="@+id/mesecnaLista"
+            android:title="Mesečna lista"
+            android:icon="@drawable/list_icon"
+            />
+
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/odjaviSe"
+            android:title="Odjavi se"
+            android:icon="@drawable/logout_icon"/>
+    </group>
+
+</menu>

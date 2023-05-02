@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="230dp"
+    android:layout_height="250dp"
+    android:layout_gravity="center"
+    android:background="@drawable/popup_background">
+    <ImageView
+        android:id="@+id/popupSlika"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/human_face"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/customborder"/>
+    <TextView
+        android:layout_below="@id/popupSlika"
+        android:id="@+id/popupIme"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Marko"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/izazovi"
+        android:background="@color/zuta"
+        android:text="Izazovi prijatelja"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/popupIme"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/statusPrijatelja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/zelena"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:text="Na mreži"/>
+
+</RelativeLayout>
