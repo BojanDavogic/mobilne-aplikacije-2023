@@ -12,11 +12,14 @@
         android:theme="@style/Theme.Slagalica"
         tools:targetApi="31">
         <activity
+            android:name=".aktivnosti.IgreSlagalice"
+            android:exported="false" />
+        <activity
             android:name=".aktivnosti.Register"
             android:exported="false" />
         <activity
             android:name=".aktivnosti.Login"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".aktivnosti.SplashScreenActivity"
             android:exported="true"
