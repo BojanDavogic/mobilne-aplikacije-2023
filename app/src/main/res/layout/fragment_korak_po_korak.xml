@@ -79,7 +79,7 @@
     <RelativeLayout
         android:id="@+id/body"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="590dp"
         android:layout_marginTop="140dp">
 
     <GridLayout
@@ -96,7 +96,7 @@
         <TextView
             android:id="@+id/red1"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
             android:background="@drawable/customborder"
@@ -106,7 +106,7 @@
         <TextView
             android:id="@+id/red2"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
             android:background="@drawable/customborder"
@@ -116,7 +116,7 @@
         <TextView
             android:id="@+id/red3"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
             android:background="@drawable/customborder"
@@ -126,7 +126,7 @@
         <TextView
             android:id="@+id/red4"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
             android:background="@drawable/customborder"
@@ -136,7 +136,7 @@
         <TextView
             android:id="@+id/red5"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
             android:background="@drawable/customborder"
@@ -146,7 +146,7 @@
         <TextView
             android:id="@+id/red6"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
             android:background="@drawable/customborder"
@@ -156,7 +156,7 @@
         <TextView
             android:id="@+id/red7"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:gravity="center"
             android:background="@drawable/customborder"
@@ -183,14 +183,14 @@
             android:textAlignment="center"
             android:gravity="center"/>
     </RelativeLayout>
+    </RelativeLayout>
     <ImageButton
         android:id="@+id/korakPoKorakDalje"
-        android:layout_width="50dp"
-        android:layout_height="70dp"
-        android:src="@drawable/right_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@null"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        />
-    </RelativeLayout>
+        android:src="@drawable/right_arrow" />
 </FrameLayout>

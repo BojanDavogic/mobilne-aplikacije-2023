@@ -3,12 +3,222 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragmenti.KoZnaZnaFragment">
+    tools:context=".fragmenti.KoZnaZnaFragment"
+    android:background="@color/pozadina">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="140dp"
+        android:orientation="horizontal"
+        android:background="@color/black">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentLeft="true">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/human_face"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bojan"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/poeniLeviIgrac"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="60"
+                android:textAlignment="center"
+                android:textColor="@color/zuta"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_border"
+            android:gravity="center"
+            android:text="25"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/human_face"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stevan"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/poeniDesniIgrac"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="60"
+                android:textAlignment="center"
+                android:textColor="@color/zuta"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="590dp"
+        android:layout_marginTop="140dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/brojPitanja"
+            android:orientation="horizontal"
+            android:layout_marginTop="20sp"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_border"
+                android:backgroundTint="@color/zelena"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginRight="5sp"/>
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_border"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginRight="5sp"/>
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_border"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginRight="5sp"/>
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_border"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginRight="5sp"/>
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_border"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/pitanje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30sp"
+                android:layout_marginTop="70sp"
+                android:layout_marginEnd="30sp"
+                android:layout_marginBottom="30sp"
+                android:background="@color/zuta"
+                android:text="Narodna poslovica: Ko drugome jamu kopa, ..."
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        <GridLayout
+            android:id="@+id/gridKoZnaZna"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pitanje"
+            android:columnCount="1"
+            android:rowCount="4"
+            android:paddingHorizontal="30sp">
+            <TextView
+                android:id="@+id/odgovor1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text="...sam u nju upada"
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/odgovor2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text="...fizički je radnik"
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/odgovor3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text="...drži neku lopatu"
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/odgovor4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text="...kopač je jama"
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+        </GridLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/koZnaZnaBtnNeZnam"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/gridKoZnaZna"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ne znam"/>
+    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/koZnaZnaDalje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:src="@drawable/right_arrow" />
 </FrameLayout>

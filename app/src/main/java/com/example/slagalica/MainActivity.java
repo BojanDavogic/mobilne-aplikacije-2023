@@ -15,6 +15,7 @@ import com.example.slagalica.fragmenti.MesecnaListaFragment;
 import com.example.slagalica.fragmenti.NedeljnaListaFragment;
 import com.example.slagalica.fragmenti.PocetniEkranFragment;
 import com.example.slagalica.fragmenti.PregledProfilaFragment;
+import com.example.slagalica.fragmenti.StatistikaFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.mesecnaLista:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MesecnaListaFragment()).commit();
+                        break;
+                    case R.id.statistika:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatistikaFragment()).commit();
+                        break;
+
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;

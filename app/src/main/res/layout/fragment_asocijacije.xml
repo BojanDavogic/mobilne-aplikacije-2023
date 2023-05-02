@@ -3,12 +3,347 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragmenti.AsocijacijeFragment">
+    tools:context=".fragmenti.AsocijacijeFragment"
+    android:background="@color/pozadina">
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:orientation="horizontal"
+        android:background="@color/black">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentLeft="true">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/human_face"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bojan"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/poeniLeviIgrac"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="60"
+                android:textAlignment="center"
+                android:textColor="@color/zuta"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_border"
+            android:gravity="center"
+            android:text="120"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/human_face"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stevan"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/poeniDesniIgrac"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="60"
+                android:textAlignment="center"
+                android:textColor="@color/zuta"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="140dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="5sp"
+            android:layout_marginEnd="5sp"
+            android:layout_marginBottom="5sp"
+            android:background="@drawable/customborder"
+            android:padding="5sp">
+
+            <LinearLayout
+                android:id="@+id/containerA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical"
+                android:layout_marginRight="30dp">
+
+                <TextView
+                    android:id="@+id/poljeA1"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="A1"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeA2"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="A2"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeA3"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="A3"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeA4"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="A4"
+                    android:textColorHint="@color/white" />
+
+                <EditText
+                    android:id="@+id/resenjeKoloneA"
+                    android:layout_width="160sp"
+                    android:layout_height="47sp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/customborder"
+                    android:gravity="center"
+                    android:hint="A"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/containerB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:id="@+id/poljeB1"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="B1"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeB2"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="B2"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeB3"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="B3"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeB4"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="B4"
+                    android:textColorHint="@color/white" />
+
+                <EditText
+                    android:id="@+id/resenjeKoloneB"
+                    android:layout_width="160sp"
+                    android:layout_height="47sp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/customborder"
+                    android:gravity="center"
+                    android:hint="B"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
+            <EditText
+                android:id="@+id/konacnoResenje"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColorHint="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/customborder"
+                android:hint="REŠENJE"/>
+
+            <LinearLayout
+                android:id="@+id/containerC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/resenjeKoloneC"
+                    android:layout_width="160sp"
+                    android:layout_height="47sp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/customborder"
+                    android:gravity="center"
+                    android:hint="C"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeC4"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="C4"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeC3"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="C3"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeC2"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="C2"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeC1"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:hint="C1"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/containerD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:gravity="bottom">
+
+                <EditText
+                    android:id="@+id/resenjeKoloneD"
+                    android:layout_width="160sp"
+                    android:layout_height="47sp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/customborder"
+                    android:gravity="center"
+                    android:hint="D"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeD4"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="D4"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeD3"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="D3"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeD2"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="D2"
+                    android:textColorHint="@color/white" />
+
+                <TextView
+                    android:id="@+id/poljeD1"
+                    android:layout_width="150sp"
+                    android:layout_height="45sp"
+                    android:background="@drawable/border_blue"
+                    android:gravity="center"
+                    android:layout_gravity="right"
+                    android:hint="D1"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 </FrameLayout>

@@ -79,17 +79,20 @@
     <RelativeLayout
         android:id="@+id/body"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="590dp"
         android:layout_marginTop="140dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30sp"
-            android:text="Spojite imena i prezimena poznatih sportista"
+            android:layout_marginStart="30sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="30sp"
+            android:layout_marginBottom="30sp"
             android:background="@color/zuta"
-            android:textColor="@color/black"
+            android:text="Spojite imena i prezimena poznatih sportista"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <GridLayout
@@ -213,16 +216,14 @@
                 android:textColor="@color/white"/>
 
         </GridLayout>
-
-        <ImageButton
-            android:id="@+id/spojniceDalje"
-            android:layout_width="50dp"
-            android:layout_height="70dp"
-            android:src="@drawable/right_arrow"
-            android:background="@null"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            />
     </RelativeLayout>
-
+    <ImageButton
+        android:id="@+id/spojniceDalje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:src="@drawable/right_arrow" />
 </FrameLayout>

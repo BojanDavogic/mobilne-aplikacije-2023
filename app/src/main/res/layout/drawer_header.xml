@@ -39,11 +39,10 @@
 
     <RelativeLayout
         android:id="@+id/relativeHeader2"
-        android:layout_width="200px"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/relativeHeader1"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dp">
+        android:layout_marginRight="16dp">
 
         <TextView
             android:id="@+id/brojTokena"
@@ -52,44 +51,40 @@
             android:text="100"
             android:textSize="20dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
             android:textColor="@color/white"/>
 
         <ImageView
             android:id="@+id/tokenImage"
-            android:layout_width="80px"
-            android:layout_height="70px"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_toRightOf="@id/brojTokena"
-            android:src="@drawable/coin"
-            android:layout_alignParentRight="true"
+            android:src="@drawable/token"
             />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relativeHeader3"
-        android:layout_width="200px"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/relativeHeader1"
         android:layout_toRightOf="@id/relativeHeader2">
 
         <TextView
-            android:id="@+id/brojPera"
+            android:id="@+id/brojZvezdica"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="200"
+            android:text="20"
+            android:layout_marginRight="6dp"
             android:textColor="@color/white"
             android:textSize="20dp" />
 
         <ImageView
-            android:id="@+id/peroImage"
-            android:layout_width="80px"
-            android:layout_height="70px"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/brojPera"
-            android:src="@drawable/feather" />
+            android:id="@+id/zvezdicaImage"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toRightOf="@id/brojZvezdica"
+            android:src="@drawable/zvezda" />
     </RelativeLayout>
-
-
-
-
 </RelativeLayout>
