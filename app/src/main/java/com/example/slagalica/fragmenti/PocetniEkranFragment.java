@@ -63,14 +63,6 @@ public class PocetniEkranFragment extends Fragment {
         return view;
     }
 
-    private void showPopupDialog() {
-        popupDialog = new Dialog(requireContext());
-        popupDialog.setContentView(R.layout.prikaz_prijatelja_popup);
-        popupDialog.setTitle("Prikaz prijatelja");
-
-        popupDialog.show();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

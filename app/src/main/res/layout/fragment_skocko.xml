@@ -113,7 +113,7 @@
                             android:id="@+id/prviRed1"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/zvezda"
+                            android:src="@drawable/zvezda_skocko"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -121,7 +121,7 @@
                             android:id="@+id/prviRed2"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/zvezda"
+                            android:src="@drawable/zvezda_skocko"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -129,7 +129,7 @@
                             android:id="@+id/prviRed3"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/zvezda"
+                            android:src="@drawable/zvezda_skocko"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -808,7 +808,7 @@
                     android:id="@+id/zvezda"
                     android:layout_width="40sp"
                     android:layout_height="40sp"
-                    android:src="@drawable/zvezda"
+                    android:src="@drawable/zvezda_skocko"
                     android:background="@null"
                     android:scaleType="fitCenter"/>
             </LinearLayout>

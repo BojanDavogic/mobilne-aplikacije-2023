@@ -6,23 +6,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ToggleButton;
 
 import com.example.slagalica.fragmenti.MesecnaListaFragment;
+import com.example.slagalica.fragmenti.MojBrojFragment;
 import com.example.slagalica.fragmenti.NedeljnaListaFragment;
 import com.example.slagalica.fragmenti.PocetniEkranFragment;
 import com.example.slagalica.fragmenti.PregledProfilaFragment;
+import com.example.slagalica.fragmenti.SpojniceFragment;
 import com.example.slagalica.fragmenti.StatistikaFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
+
+    private void prikaziMojBrojFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new MojBrojFragment());
+        transaction.commit();
+    }
+
+    private void prikaziSpojniceFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new SpojniceFragment());
+        transaction.commit();
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -36,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseApp.initializeApp(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //

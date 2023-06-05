@@ -1,6 +1,7 @@
 package com.example.slagalica.aktivnosti;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.example.slagalica.fragmenti.PocetniEkranFragment;
 import com.example.slagalica.fragmenti.SpojniceFragment;
 
 public class IgreSlagalice extends AppCompatActivity {
+
+    private int brojIgranja = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
