@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.slagalica.R;
+import com.example.slagalica.model.Gost;
+import com.example.slagalica.pomocniAlati.SharedData;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,9 +41,10 @@ import java.util.Random;
 
 public class MojBrojFragment extends Fragment {
 
+    SharedData sharedData = SharedData.getInstance();
+
     public int poeniIgraca = 0;
 
-    // Definišite listu brojeva i promenljivu za praćenje trenutnog indeksa
     private List<Integer> trocifreniRotirajuciBrojevi = new ArrayList<>();
     private List<Integer> jednocifreniRotirajuciBrojevi = new ArrayList<>();
     private List<Integer> dvocifreniRotirajuciBrojevi = Arrays.asList(10, 15, 20);
@@ -49,7 +52,6 @@ public class MojBrojFragment extends Fragment {
     private int trenutniIndeks = 0;
     private Random random = new Random();
 
-    // Definišite Handler i Runnable
     private Handler handlerTrocifreni;
     private Handler handlerJednocifreni;
     private Handler handlerDvocifreni;
@@ -135,7 +137,6 @@ public class MojBrojFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         ucitajBrojeveIzFirestore();
 
-        // Kreirajte Handler i definirajte Runnable
         handlerTrocifreni = new Handler();
         handlerJednocifreni = new Handler();
         handlerDvocifreni = new Handler();
@@ -148,8 +149,7 @@ public class MojBrojFragment extends Fragment {
             }
         };
 
-        // Pokrenite Runnable pri ulasku u igru
-        handlerTrocifreni.postDelayed(rotirajRunnableTrocifreni, 0); // Pokrenite odmah
+        handlerTrocifreni.postDelayed(rotirajRunnableTrocifreni, 0);
 
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -359,7 +359,7 @@ public class MojBrojFragment extends Fragment {
                 String currentResult = rezultatTextView.getText().toString().trim();
                 if (!currentResult.isEmpty()) {
                     if (lastInputWasNumber) {
-                        // Ako je poslednji unos bio broj, pronađite poslednji broj u izrazu
+                        // Ako je poslednji unos bio broj, pronađi poslednji broj u izrazu
                         String lastNumber = getLastNumber(currentResult);
                         if (lastNumber != null) {
                             usedNumbers.remove(lastNumber);
@@ -368,11 +368,11 @@ public class MojBrojFragment extends Fragment {
                     // Pronaći poslednji broj ili operator
                     String lastInput = getLastNumberOrOperator(currentResult);
                     if (lastInput != null) {
-                        // Ako je poslednji unos bio broj, obrišite ceo broj
+                        // Ako je poslednji unos bio broj, obriši ceo broj
                         if (isNumber(lastInput)) {
                             currentResult = currentResult.substring(0, currentResult.lastIndexOf(lastInput));
                         } else {
-                            // Ako je poslednji unos bio operator, obrišite samo operator
+                            // Ako je poslednji unos bio operator, obriši samo operator
                             currentResult = currentResult.substring(0, currentResult.length() - 1);
                         }
                         rezultatTextView.setText(currentResult);
@@ -411,7 +411,6 @@ public class MojBrojFragment extends Fragment {
         }
     }
 
-    // Metoda za pronalaženje poslednjeg broja ili operatora u izrazu
     private String getLastNumberOrOperator(String expression) {
         String[] tokens = expression.split("(?<=[-+*/()])|(?=[-+*/()])");
         if (tokens.length > 0) {
@@ -420,7 +419,6 @@ public class MojBrojFragment extends Fragment {
         return null;
     }
 
-    // Metoda za pronalaženje poslednjeg broja u izrazu
     private String getLastNumber(String expression) {
         String[] tokens = expression.split("[+\\-*/()]");
         if (tokens.length > 0) {
@@ -429,28 +427,25 @@ public class MojBrojFragment extends Fragment {
         return null;
     }
 
-    // Metoda za proveru da li je poslednji unos bio broj
     private boolean isLastInputNumber(String expression) {
         expression = expression.trim();
         return !expression.isEmpty() && Character.isDigit(expression.charAt(expression.length() - 1));
     }
 
-    // Metoda za proveru da li je poslednji unos bio računska operacija
     private boolean isLastInputOperation(String expression) {
         expression = expression.trim();
         return !expression.isEmpty() && "+-*/".contains(expression.substring(expression.length() - 1));
     }
 
-    private List<String> usedNumbers = new ArrayList<>(); // Lista za praćenje korišćenih brojeva
+    private List<String> usedNumbers = new ArrayList<>();
 
-    private boolean lastInputWasNumber = false; // Flag koji označava da li je poslednji unos bio broj
+    private boolean lastInputWasNumber = false;
     private boolean lastInputWasOperation = false;
 
     private void appendToResult(String value) {
         String currentResult = rezultatTextView.getText().toString();
 
         if (value.equals("otvorenaZagrada")) {
-            // Provera da li je otvorena zagrada prva stavka koja se dodaje
             if (currentResult.isEmpty() || isOperator(currentResult)) {
                 currentResult += "(";
                 rezultatTextView.setText(currentResult);
@@ -507,15 +502,19 @@ public class MojBrojFragment extends Fragment {
 
             if (result == Integer.parseInt(trazeniBroj)) {
                 poeniIgraca += 20;
+                sharedData.setPoeniIgraca(poeniIgraca);
                 prikaziObavestenje("Rezultat: " + result + " \n" +
                         "Broj osvojenih bodova: " + poeniIgraca + "\nSledeca igra pocinje za:");
 //                prikaziRezultat(result, poeniIgraca);
             } else if (result != 0 && result != Integer.parseInt(trazeniBroj)) {
                 poeniIgraca += 5;
+                sharedData.setPoeniIgraca(poeniIgraca);
                 prikaziObavestenje("Rezultat: " + result + " \n" +
                         "Broj osvojenih bodova: " + poeniIgraca + "\nSledeca igra pocinje za:");
 //                prikaziRezultat(result, poeniIgraca);
             } else {
+                poeniIgraca += 0;
+                sharedData.setPoeniIgraca(poeniIgraca);
                 prikaziObavestenje("Rezultat: " + result + " \n" +
                         "Broj osvojenih bodova: " + poeniIgraca + "\nSledeca igra pocinje za:");
 //                prikaziRezultat(0, 0);
@@ -603,7 +602,6 @@ public class MojBrojFragment extends Fragment {
                         int randomIndex = new Random().nextInt(dokumenti.size());
                         String randomDokument = dokumenti.get(randomIndex);
 
-                        // Nastavite sa ostatkom koda...
                         db.collection("mojBroj").document(randomDokument)
                                 .get()
                                 .addOnCompleteListener(task2 -> {

@@ -27,19 +27,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bojan"
+                android:text="Gost"
                 android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/poeniLeviIgrac"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="30"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/zuta"/>
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tajmer"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
@@ -48,32 +49,6 @@
             android:text="70"
             android:textColor="@color/white"
             android:textSize="30sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentRight="true"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/human_face"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Stevan"
-                android:textColor="@color/white"/>
-            <TextView
-                android:id="@+id/poeniDesniIgrac"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:text="35"
-                android:textAlignment="center"
-                android:textColor="@color/zuta"/>
-        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -82,106 +57,117 @@
         android:layout_height="590dp"
         android:layout_marginTop="140dp">
 
-    <GridLayout
-        android:id="@+id/grid"
-        android:layout_width="match_parent"
-        android:layout_height="430sp"
-        android:layout_marginStart="20sp"
-        android:layout_marginTop="20sp"
-        android:layout_marginEnd="20sp"
-        android:layout_marginBottom="20sp"
-        android:columnCount="1"
-        android:rowCount="8">
+        <GridLayout
+            android:id="@+id/grid"
+            android:layout_width="match_parent"
+            android:layout_height="430sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginEnd="20sp"
+            android:layout_marginBottom="20sp"
+            android:columnCount="1"
+            android:rowCount="8">
 
-        <TextView
-            android:id="@+id/red1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:background="@drawable/customborder"
-            android:text="IMA VEZE SA SAVOM I DUNAVOM"
-            android:textSize="15sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/red2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:background="@drawable/customborder"
-            android:text="SVIH DESET SLOVA OVE REČI JE RAZLIČITO"
-            android:textSize="15sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/red3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:background="@drawable/customborder"
-            android:text="IMA VEZE SA ZDRAVLJEM"
-            android:textSize="15sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/red4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:background="@drawable/customborder"
-            android:text="MOŽE SE ODNOSITI NA ŽIVOT"
-            android:textSize="15sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/red5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:background="@drawable/customborder"
-            android:text="IMA SVOG AGENTA I SVOJU PREMIJU"
-            android:textSize="15sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/red6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:background="@drawable/customborder"
-            android:text="ZA VOZILO JE OBAVEZNO"
-            android:textSize="15sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/red7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:background="@drawable/customborder"
-            android:text="POSTOJI I KASKO VARIJANTA"
-            android:textSize="15sp"
-            android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/polje1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/polje2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/polje3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/polje4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/polje5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/polje6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/polje7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:gravity="center"
+                android:background="@drawable/customborder"
+                android:text=""
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
 
-    </GridLayout>
+        </GridLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="center"
-        android:layout_below="@id/grid">
-        <TextView
-            android:id="@+id/korakPoKorakRezultat"
-            android:layout_width="150sp"
-            android:layout_height="40sp"
-            android:text="OSIGURANJE"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:background="@color/plava"
-            android:textAlignment="center"
-            android:gravity="center"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:layout_below="@id/grid"
+            android:paddingLeft="56dp">
+            <EditText
+                android:id="@+id/resenje"
+                android:layout_width="150sp"
+                android:layout_height="40sp"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:background="@color/plava"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:imeOptions="actionDone"
+                android:layout_marginRight="20dp"/>
+            <ImageButton
+                android:layout_centerVertical="true"
+                android:id="@+id/btnPotvrdi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/check"
+                android:layout_toRightOf="@id/resenje"
+                android:background="@color/pozadina"/>
+        </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>
