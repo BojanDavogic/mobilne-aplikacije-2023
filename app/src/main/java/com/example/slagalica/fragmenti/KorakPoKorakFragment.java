@@ -405,7 +405,7 @@ public class KorakPoKorakFragment extends Fragment {
     public void prikaziSkockoFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.igreSlagaliceContainer, new SkockoFragment());
+        transaction.replace(R.id.igreSlagaliceContainer, new MojBrojFragment());
         transaction.commitAllowingStateLoss();
     }
 }

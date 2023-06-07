@@ -571,7 +571,6 @@ public class MojBrojFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-                prikaziKorakPoKorakFragment();
             }
         };
 
