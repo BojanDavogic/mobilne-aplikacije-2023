@@ -41,9 +41,12 @@ import java.util.Random;
 
 public class MojBrojFragment extends Fragment {
 
-    SharedData sharedData = SharedData.getInstance();
+    private TextView poeniLeviIgrac;
 
-    public int poeniIgraca = 0;
+    SharedData sharedData = SharedData.getInstance();
+    int poeniIgraca = sharedData.getPoeniIgraca();
+
+//    public int poeniIgraca = 0;
 
     private List<Integer> trocifreniRotirajuciBrojevi = new ArrayList<>();
     private List<Integer> jednocifreniRotirajuciBrojevi = new ArrayList<>();
@@ -102,6 +105,8 @@ public class MojBrojFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_moj_broj, container, false);
+        poeniLeviIgrac = view.findViewById(R.id.poeniLeviIgrac);
+        poeniLeviIgrac.setText(String.valueOf(poeniIgraca));
 
         for (int i = 1; i <= 20; i++) {
             int randomBroj = random.nextInt(900) + 100;
@@ -396,6 +401,7 @@ public class MojBrojFragment extends Fragment {
             public void onClick(View v) {
                 String expression = rezultatTextView.getText().toString();
                 evaluirajIzraz(expression);
+                tajmerIgra.cancel();
             }
         });
 
@@ -503,18 +509,21 @@ public class MojBrojFragment extends Fragment {
             if (result == Integer.parseInt(trazeniBroj)) {
                 poeniIgraca += 20;
                 sharedData.setPoeniIgraca(poeniIgraca);
+                poeniLeviIgrac.setText(String.valueOf(poeniIgraca));
                 prikaziObavestenje("Rezultat: " + result + " \n" +
                         "Broj osvojenih bodova: " + poeniIgraca + "\nSledeca igra pocinje za:");
 //                prikaziRezultat(result, poeniIgraca);
             } else if (result != 0 && result != Integer.parseInt(trazeniBroj)) {
                 poeniIgraca += 5;
                 sharedData.setPoeniIgraca(poeniIgraca);
+                poeniLeviIgrac.setText(String.valueOf(poeniIgraca));
                 prikaziObavestenje("Rezultat: " + result + " \n" +
                         "Broj osvojenih bodova: " + poeniIgraca + "\nSledeca igra pocinje za:");
 //                prikaziRezultat(result, poeniIgraca);
             } else {
                 poeniIgraca += 0;
                 sharedData.setPoeniIgraca(poeniIgraca);
+                poeniLeviIgrac.setText(String.valueOf(poeniIgraca));
                 prikaziObavestenje("Rezultat: " + result + " \n" +
                         "Broj osvojenih bodova: " + poeniIgraca + "\nSledeca igra pocinje za:");
 //                prikaziRezultat(0, 0);
@@ -683,7 +692,7 @@ public class MojBrojFragment extends Fragment {
     public void prikaziKorakPoKorakFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.igreSlagaliceContainer, new KorakPoKorakFragment());
-        transaction.commitAllowingStateLoss();
+        transaction.replace(R.id.igreSlagaliceContainer, new KoZnaZnaFragment());
+        transaction.commit();
     }
 }

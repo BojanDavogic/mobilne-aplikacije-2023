@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.example.slagalica.R;
 import com.example.slagalica.fragmenti.AsocijacijeFragment;
+import com.example.slagalica.fragmenti.KoZnaZnaFragment;
 import com.example.slagalica.fragmenti.MojBrojFragment;
 import com.example.slagalica.fragmenti.PocetniEkranFragment;
 import com.example.slagalica.fragmenti.SkockoFragment;
@@ -26,6 +27,6 @@ public class IgreSlagalice extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, new AsocijacijeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, new KoZnaZnaFragment()).commitAllowingStateLoss();
     }
 }

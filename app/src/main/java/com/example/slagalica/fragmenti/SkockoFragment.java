@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.slagalica.R;
 import com.example.slagalica.pomocniAlati.SharedData;
@@ -526,6 +525,9 @@ public class SkockoFragment extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 tajmerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+                if (millisUntilFinished <= 10000) {
+                    tajmerTextView.setTextColor(Color.RED);
+                }
             }
             @Override
             public void onFinish() {
@@ -567,7 +569,7 @@ public class SkockoFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-                prikaziAsocijacijeFragment();
+                prikaziKorakPoKorakFragment();
             }
         };
 
@@ -742,7 +744,7 @@ public class SkockoFragment extends Fragment {
         }
     }
 
-    public void prikaziAsocijacijeFragment() {
+    public void prikaziKorakPoKorakFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.igreSlagaliceContainer, new KorakPoKorakFragment());

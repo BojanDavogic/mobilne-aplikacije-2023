@@ -44,6 +44,7 @@ public class AsocijacijeFragment extends Fragment {
 
     SharedData sharedData = SharedData.getInstance();
     int prenetiPoeni = sharedData.getPoeniIgraca();
+    public int poeniIgraca = 0;
 
     private FirebaseFirestore db;
 
@@ -274,94 +275,115 @@ public class AsocijacijeFragment extends Fragment {
                 } if (!unetoResenjeKoloneD.isEmpty()) {
                     proveriResenje("d", unetoResenjeKoloneD, resenjeKoloneD);
                 }
-
-                if (proveriKonacnoResenje(unetoKonacnoResenje))
-
-                {
-                     prenetiPoeni += 7;
+                int poeni = 0;
+                if (proveriKonacnoResenje(unetoKonacnoResenje)) {
+                    prenetiPoeni += 7;
+                    poeni += 7;
 
                     if (poljeA1.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeA2.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeA3.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeA4.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (resenjeKoloneA.isEnabled()) {
                         prenetiPoeni += 2;
+                        poeni += 2;
                     }
 
                     if (poljeB1.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeB2.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeB3.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeB4.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (resenjeKoloneB.isEnabled()) {
                         prenetiPoeni += 2;
+                        poeni += 2;
                     }
 
                     if (poljeC1.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeC2.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeC3.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeC4.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (resenjeKoloneC.isEnabled()) {
                         prenetiPoeni += 2;
+                        poeni += 2;
                     }
 
                     if (poljeD1.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeD2.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeD3.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (poljeD4.isEnabled()) {
                         prenetiPoeni += 1;
+                        poeni += 1;
                     }
 
                     if (resenjeKoloneD.isEnabled()) {
                         prenetiPoeni += 2;
+                        poeni += 2;
                     }
 
                     poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
                     sharedData.setPoeniIgraca(prenetiPoeni);
+//                    tajmerIgra.cancel();
+                    prikaziObavestenje("Igra je zavrsena\nOsvojili ste " + poeni + " poena\nSledeca igra pocinje za: ");
                 }
             }
         });
@@ -375,6 +397,9 @@ public class AsocijacijeFragment extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 tajmerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+                if (millisUntilFinished <= 10000) {
+                    tajmerTextView.setTextColor(Color.RED);
+                }
             }
             @Override
             public void onFinish() {
@@ -397,7 +422,7 @@ public class AsocijacijeFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Igra je zavrsena");
         builder.setMessage(poruka);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
 
         final TextView tajmerObavestenjeTextView = new TextView(requireContext());
         tajmerObavestenjeTextView.setTextSize(24);
@@ -560,7 +585,7 @@ public class AsocijacijeFragment extends Fragment {
             resenjeKoloneD.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
             resenjeKoloneD.setTextColor(Color.BLACK);
             prikaziPoruku("Pogodili ste konacno resenje!");
-            prikaziObavestenje("Pogodili ste konacno resenje");
+//            prikaziObavestenje("Pogodili ste konacno resenje");
             return true;
         } else {
             prikaziPoruku("Niste pogodili konacno resenje!");
@@ -604,6 +629,6 @@ public class AsocijacijeFragment extends Fragment {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.igreSlagaliceContainer, new SkockoFragment());
-        transaction.commitAllowingStateLoss();
+        transaction.commit();
     }
 }

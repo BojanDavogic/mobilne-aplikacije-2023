@@ -15,11 +15,9 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -166,6 +164,9 @@ public class KorakPoKorakFragment extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 tajmerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+                if (millisUntilFinished <= 10000) {
+                    tajmerTextView.setTextColor(Color.RED);
+                }
             }
             @Override
             public void onFinish() {
@@ -206,7 +207,7 @@ public class KorakPoKorakFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-                prikaziSkockoFragment();
+                prikaziMojBrojFragment();
             }
         };
 
@@ -402,7 +403,7 @@ public class KorakPoKorakFragment extends Fragment {
     }
 
 
-    public void prikaziSkockoFragment() {
+    public void prikaziMojBrojFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.igreSlagaliceContainer, new MojBrojFragment());
