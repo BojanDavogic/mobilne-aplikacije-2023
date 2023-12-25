@@ -269,11 +269,33 @@ public class SpojniceFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-//                prikaziMojBrojFragment();
+                tajmerIgra.cancel();
+                prikaziBodoveObavestenje();
             }
         };
 
         tajmerPrikaz.start();
+    }
+
+    private void prikaziBodoveObavestenje() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Osvojeni bodovi");
+        builder.setMessage("Osvojili ste ukupno " + prenetiPoeni + " poena.");
+
+        builder.setPositiveButton("Ok", (dialog, which) -> {
+            // Idi na početni ekran
+            idiNaPocetniEkran();
+        });
+
+        builder.setCancelable(false);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void idiNaPocetniEkran() {
+        PocetniEkranFragment pocetniEkranFragment = new PocetniEkranFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.igreSlagaliceContainer, pocetniEkranFragment).commit();
     }
 
     private void prikaziOdgovor(String poruka) {

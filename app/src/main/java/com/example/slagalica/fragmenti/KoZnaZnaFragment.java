@@ -280,7 +280,7 @@ public class KoZnaZnaFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-//                prikaziSpojniceFragment();
+                prikaziSpojniceFragment();
             }
         };
 

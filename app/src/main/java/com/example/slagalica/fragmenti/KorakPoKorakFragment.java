@@ -145,7 +145,7 @@ public class KorakPoKorakFragment extends Fragment {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            prikaziObavestenje("Pogodili ste!\nOsvojili ste " + finalPoeni + " poena");
+                            prikaziObavestenje("Pogodili ste!\nOsvojili ste " + finalPoeni + " poena.\nSledeca igra pocinje za:");
                         }
                     }, 5000);
                 } else {

@@ -141,6 +141,7 @@ public class MojBrojFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         ucitajBrojeveIzFirestore();
+        pokreniTajmerPrikazaBrojeva();
 
         handlerTrocifreni = new Handler();
         handlerJednocifreni = new Handler();
@@ -408,6 +409,54 @@ public class MojBrojFragment extends Fragment {
         return view;
     }
 
+    private void pokreniTajmerPrikazaBrojeva() {
+        tajmerPrikaz = new CountDownTimer(trajanjePrikaza, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tajmerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+                if (millisUntilFinished <= 10000) {
+                    tajmerTextView.setTextColor(Color.RED);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                omoguciUnosKorisniku();
+                tajmerTextView.setTextColor(Color.WHITE);
+            }
+        };
+
+        tajmerPrikaz.start();
+    }
+
+    private void omoguciUnosKorisniku() {
+        ponudjeniBroj1TextView.setEnabled(true);
+        ponudjeniBroj2TextView.setEnabled(true);
+        ponudjeniBroj3TextView.setEnabled(true);
+        ponudjeniBroj4TextView.setEnabled(true);
+        ponudjeniBroj5TextView.setEnabled(true);
+        ponudjeniBroj6TextView.setEnabled(true);
+
+        ponudjeniBroj1TextView.setTextColor(Color.WHITE);
+        ponudjeniBroj2TextView.setTextColor(Color.WHITE);
+        ponudjeniBroj3TextView.setTextColor(Color.WHITE);
+        ponudjeniBroj4TextView.setTextColor(Color.WHITE);
+        ponudjeniBroj5TextView.setTextColor(Color.WHITE);
+        ponudjeniBroj6TextView.setTextColor(Color.WHITE);
+
+        plus.setEnabled(true);
+        minus.setEnabled(true);
+        puta.setEnabled(true);
+        podeljeno.setEnabled(true);
+        otvorenaZagrada.setEnabled(true);
+        zatvorenaZagrada.setEnabled(true);
+
+        for(int i=1; i<=7;i++){
+            btnStop.performClick();
+        }
+//        pokreniTajmerIgre();
+    }
+
     private void rotirajBrojeve(List<Integer> brojevi, TextView textView) {
         int brojElemenata = brojevi.size();
         if (brojElemenata > 0) {
@@ -580,6 +629,7 @@ public class MojBrojFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
+                prikaziKorakPoKorakFragment();
             }
         };
 

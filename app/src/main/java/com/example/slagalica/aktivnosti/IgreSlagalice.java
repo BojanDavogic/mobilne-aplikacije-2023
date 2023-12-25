@@ -27,6 +27,6 @@ public class IgreSlagalice extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, new KoZnaZnaFragment()).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, new AsocijacijeFragment()).commitAllowingStateLoss();
     }
 }

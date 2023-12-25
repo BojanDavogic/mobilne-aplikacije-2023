@@ -380,10 +380,18 @@ public class AsocijacijeFragment extends Fragment {
                         poeni += 2;
                     }
 
+                    int finalpoeni = poeni;
+
                     poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
                     sharedData.setPoeniIgraca(prenetiPoeni);
 //                    tajmerIgra.cancel();
-                    prikaziObavestenje("Igra je zavrsena\nOsvojili ste " + poeni + " poena\nSledeca igra pocinje za: ");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            prikaziObavestenje("Igra je zavrsena\nOsvojili ste " + finalpoeni + " poena\nSledeca igra pocinje za: ");
+                        }
+                    }, 3000);
+
                 }
             }
         });

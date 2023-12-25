@@ -478,7 +478,13 @@ public class SkockoFragment extends Fragment {
             }
             sharedData.setPoeniIgraca(prenetiPoeni);
             tajmerIgra.cancel();
-            prikaziObavestenje("Igra je zavrsena\nOsvojili ste " + poeni + " poena\nSledeca igra pocinje za: ");
+            int finalpoeni = poeni;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    prikaziObavestenje("Igra je zavrsena\nOsvojili ste " + finalpoeni + " poena\nSledeca igra pocinje za: ");
+                }
+            }, 3000);
         }
 
         trenutniRed++;
