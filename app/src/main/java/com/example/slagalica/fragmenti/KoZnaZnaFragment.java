@@ -2,6 +2,7 @@ package com.example.slagalica.fragmenti;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -51,9 +54,10 @@ public class KoZnaZnaFragment extends Fragment {
     private AppCompatButton neZnamButton;
     private Map<String, Object> trenutnoPitanje;
     private List<Map<String, Object>> svaPitanja;
-    private List<String> pitanjaa;
+    private boolean prikazanOdgovor = false;
     private int trenutniIndeksPitanja = 0;
     private int poeni = 0;
+
     ImageButton btnKoZnaZnaDalje;
     private View view;
 
@@ -77,31 +81,34 @@ public class KoZnaZnaFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         ucitajPoljaIzFirestore();
 
+//        pokreniTajmerIgre();
+//        pokreniTajmerPromenePitanja();
+
         odgovor1TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                proveriOdgovor(odgovor1TextView.getText().toString());
+                proveriOdgovor(odgovor1TextView);
             }
         });
 
         odgovor2TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                proveriOdgovor(odgovor2TextView.getText().toString());
+                proveriOdgovor(odgovor2TextView);
             }
         });
 
         odgovor3TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                proveriOdgovor(odgovor3TextView.getText().toString());
+                proveriOdgovor(odgovor3TextView);
             }
         });
 
         odgovor4TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                proveriOdgovor(odgovor4TextView.getText().toString());
+                proveriOdgovor(odgovor4TextView);
             }
         });
 
@@ -109,24 +116,26 @@ public class KoZnaZnaFragment extends Fragment {
         neZnamButton.setOnClickListener(v -> {
             if (trenutniIndeksPitanja < svaPitanja.size()) {
                 trenutnoPitanje = svaPitanja.get(trenutniIndeksPitanja);
-                System.out.println("Trenutni index" + trenutniIndeksPitanja);
-                System.out.println("Trenutno pitanje" + trenutnoPitanje);
-
-                prikaziOdgovor("Tačan odgovor je: " + trenutnoPitanje.get("tacanOdgovor"));
-
-                trenutniIndeksPitanja++;
-                new CountDownTimer(1000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        trenutnoPitanje = svaPitanja.get(trenutniIndeksPitanja);
-                        postaviPitanjeIOdgovore(trenutnoPitanje);
-                        azurirajBojuKrugaPitanja();
-                    }
-                }.start();
+                prikaziTacanOdgovor();
+//                System.out.println("Trenutni index" + trenutniIndeksPitanja);
+//                System.out.println("Trenutno pitanje" + trenutnoPitanje);
+//
+//                prikaziOdgovor("Tačan odgovor je: " + trenutnoPitanje.get("tacanOdgovor"));
+//
+////                trenutniIndeksPitanja++;
+//                new CountDownTimer(1000, 1000) {
+//                    @Override
+//                    public void onTick(long millisUntilFinished) {
+//                    }
+//
+//                    @Override
+//                    public void onFinish() {
+//                        trenutnoPitanje = svaPitanja.get(trenutniIndeksPitanja);
+//                        prikaziNarednoPitanje();
+////                        postaviPitanjeIOdgovore(trenutnoPitanje);
+////                        azurirajBojuKrugaPitanja();
+//                    }
+//                }.start();
             } else {
             }
         });
@@ -142,26 +151,61 @@ public class KoZnaZnaFragment extends Fragment {
         return view;
     }
 
-    private void proveriOdgovor(String odgovor) {
+    private void proveriOdgovor(TextView odgovor) {
+        String txtOdgovor = odgovor.getText().toString();
         if (trenutniIndeksPitanja < svaPitanja.size()) {
-            if (odgovor.equals(trenutnoPitanje.get("tacanOdgovor"))) {
-                prikaziOdgovor("Tačan odgovor!");
+            if (txtOdgovor.equals(trenutnoPitanje.get("tacanOdgovor"))) {
+                odgovor.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
+                prikazanOdgovor = true;
                 poeni += 10;
             } else {
-                prikaziOdgovor("Netačan odgovor!\nTačan odgovor je: " + trenutnoPitanje.get("tacanOdgovor"));
+                odgovor.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.wrong_answer));
+                prikaziTacanOdgovor();
+                prikazanOdgovor = true;
                 poeni -= 5;
             }
-            trenutniIndeksPitanja++;
-            if (trenutniIndeksPitanja < svaPitanja.size()) {
-                trenutnoPitanje = svaPitanja.get(trenutniIndeksPitanja);
-                postaviPitanjeIOdgovore(trenutnoPitanje);
-                azurirajBojuKrugaPitanja();
-            } else {
-                prikaziObavestenje("Igra je zavrsena. Osvojili ste " + poeni + " poena.");
-            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    odgovor.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.customborder));
+                }
+            }, 1000);
+
+//            prikaziNarednoPitanje();
         }
+//        else {
+//            prikaziObavestenje("Igra je zavrsena. Osvojili ste " + poeni + " poena.");
+//        }
     }
 
+    private void prikaziTacanOdgovor() {
+        String tacanOdgovor = trenutnoPitanje.get("tacanOdgovor").toString();
+        // Pronađite TextView za tačan odgovor na osnovu teksta
+        TextView tacanOdgovorView = null;
+
+        if (odgovor1TextView.getText().toString().equals(tacanOdgovor)) {
+            tacanOdgovorView = odgovor1TextView;
+        } else if (odgovor2TextView.getText().toString().equals(tacanOdgovor)) {
+            tacanOdgovorView = odgovor2TextView;
+        } else if (odgovor3TextView.getText().toString().equals(tacanOdgovor)) {
+            tacanOdgovorView = odgovor3TextView;
+        } else if (odgovor4TextView.getText().toString().equals(tacanOdgovor)) {
+            tacanOdgovorView = odgovor4TextView;
+        }
+
+        if (tacanOdgovorView != null) {
+            tacanOdgovorView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
+        }
+
+        TextView finalTacanOdgovorView = tacanOdgovorView;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finalTacanOdgovorView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.customborder));
+            }
+        }, 1000);
+    }
 
     private void pokreniTajmerIgre() {
         tajmerIgra = new CountDownTimer(trajanjeIgre, 1000) {
@@ -177,13 +221,38 @@ public class KoZnaZnaFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        prikaziObavestenje("Vreme je isteklo\nOsvojili ste 0 bodova\nSledeca igra pocinje za:");
+                        prenetiPoeni += poeni;
+                        poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
+                        sharedData.setPoeniIgraca(prenetiPoeni);
+
+                        prikaziObavestenje("Igra je zavrsena. Osvojili ste " + poeni + " poena");
                     }
                 }, 2000);
             }
         };
 
         tajmerIgra.start();
+    }
+
+    private void pokreniTajmerPromenePitanja() {
+        tajmerPrikaz = new CountDownTimer(trajanjePrikaza, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tajmerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+                if (millisUntilFinished <= 10000) {
+                    tajmerTextView.setTextColor(Color.RED);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (!prikazanOdgovor) {
+                    prikaziTacanOdgovor();
+                }
+                prikaziNarednoPitanje();
+            }
+        };
+        tajmerPrikaz.start();
     }
 
     private void prikaziObavestenje(String poruka) {
@@ -211,7 +280,7 @@ public class KoZnaZnaFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-//                prikaziSkockoFragment();
+//                prikaziSpojniceFragment();
             }
         };
 
@@ -261,7 +330,6 @@ public class KoZnaZnaFragment extends Fragment {
     }
 
     private void ucitajPoljaIzFirestore() {
-        pitanjaa = new ArrayList<>();
 
         db.collection("koZnaZna")
                 .get()
@@ -273,13 +341,10 @@ public class KoZnaZnaFragment extends Fragment {
                     if (!svaPitanja.isEmpty()) {
                         trenutnoPitanje = svaPitanja.get(0);
                         postaviPitanjeIOdgovore(trenutnoPitanje);
-                        pokreniTajmerIgre();
-                        pokreniTajmerPromenePitanja();
                     }
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Greška prilikom dobavljanja dokumenata: ", e));
     }
-
 
     private void postaviPitanjeIOdgovore(Map<String, Object> pitanje) {
         pitanjeTextView.setText(pitanje.get("pitanje").toString());
@@ -287,6 +352,8 @@ public class KoZnaZnaFragment extends Fragment {
         odgovor2TextView.setText(pitanje.get("odgovor2").toString());
         odgovor3TextView.setText(pitanje.get("odgovor3").toString());
         odgovor4TextView.setText(pitanje.get("odgovor4").toString());
+
+        pokreniTajmerPromenePitanja();
     }
 
     private void azurirajBojuKrugaPitanja() {
@@ -321,30 +388,31 @@ public class KoZnaZnaFragment extends Fragment {
         }
     }
 
-    private void pokreniTajmerPromenePitanja() {
-        tajmerPrikaz = new CountDownTimer(trajanjePrikaza, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-            }
-
-            @Override
-            public void onFinish() {
-                prikaziNarednoPitanje();
-                pokreniTajmerPromenePitanja();
-            }
-        };
-        tajmerPrikaz.start();
-    }
-
     private void prikaziNarednoPitanje() {
         trenutniIndeksPitanja++;
         if (trenutniIndeksPitanja < svaPitanja.size()) {
             trenutnoPitanje = svaPitanja.get(trenutniIndeksPitanja);
-            postaviPitanjeIOdgovore(trenutnoPitanje);
-            azurirajBojuKrugaPitanja();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    postaviPitanjeIOdgovore(trenutnoPitanje);
+                    azurirajBojuKrugaPitanja();
+                    prikazanOdgovor = false;
+                }
+            }, 1000);
         } else {
-            prikaziObavestenje("Igra je zavrsenaa. Osvojili ste " + poeni + " poena.");
+            prenetiPoeni += poeni;
+            poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
+            sharedData.setPoeniIgraca(prenetiPoeni);
+
+            prikaziObavestenje("Osvojili ste " + poeni + " poena.\nSledeca igra pocinje za:\n");
         }
     }
 
+    public void prikaziSpojniceFragment() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.igreSlagaliceContainer, new SpojniceFragment());
+        transaction.commitAllowingStateLoss();
+    }
 }
