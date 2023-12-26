@@ -10,17 +10,25 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.slagalica.MainActivity;
 import com.example.slagalica.R;
+import com.example.slagalica.model.Korisnik;
+import com.example.slagalica.servisi.KorisnikServis;
+
+import java.util.Map;
 
 public class Login extends AppCompatActivity {
+    KorisnikServis korisnikServis = new KorisnikServis();
 
     EditText email, lozinka;
     boolean vidljivostLozinke;
+    Button btnLogin;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -34,6 +42,7 @@ public class Login extends AppCompatActivity {
 
         email = findViewById(R.id.txtEmail);
         lozinka = findViewById(R.id.txtLozinka);
+        btnLogin = findViewById(R.id.btnLogin);
 
         lozinka.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -76,5 +85,25 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String identifikatorPrijave = email.getText().toString();
+                String unetaLozinka = lozinka.getText().toString();
+
+                boolean uspeh = korisnikServis.prijaviKorisnika(identifikatorPrijave, unetaLozinka);
+
+                if (uspeh) {
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(Login.this, "Uspesno ste se prijavili!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(Login.this, "Pogresni podaci za prijavu.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }
