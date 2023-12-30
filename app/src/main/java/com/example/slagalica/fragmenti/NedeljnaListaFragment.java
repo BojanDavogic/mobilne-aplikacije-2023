@@ -15,6 +15,7 @@ public class NedeljnaListaFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.nedeljna_lista, container, false);
+        View view = inflater.inflate(R.layout.nedeljna_lista, container, false);
+        return view;
     }
 }

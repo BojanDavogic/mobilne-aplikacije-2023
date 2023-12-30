@@ -74,8 +74,23 @@ public class AsocijacijeFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        poeniLeviIgrac = view.findViewById(R.id.poeniLeviIgrac);
-        poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
+            String korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
+            int poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
+            int poeniDesniIgrac = bundle.getInt("poeniDesniIgrac", 0);
+
+            TextView textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
+            TextView textUsernameRight = view.findViewById(R.id.korisnickoImeDesniIgrac);
+            TextView textPoeniLeft = view.findViewById(R.id.poeniLeviIgrac);
+            TextView textPoeniRight = view.findViewById(R.id.poeniDesniIgrac);
+
+            textUsernameLeft.setText(korisnickoImeLeviIgrac);
+            textUsernameRight.setText(korisnickoImeDesniIgrac);
+            textPoeniLeft.setText(String.valueOf(poeniLeviIgrac));
+            textPoeniRight.setText(String.valueOf(poeniDesniIgrac));
+        }
 
         tajmerTextView = view.findViewById(R.id.tajmer);
         pokreniTajmerIgre();

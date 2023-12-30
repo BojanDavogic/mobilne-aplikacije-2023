@@ -5,12 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/drawerLayout">
-
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -19,11 +17,21 @@
             app:menu="@menu/drawer_menu"
             android:fitsSystemWindows="true"
             android:layout_gravity="start">
-
         </com.google.android.material.navigation.NavigationView>
-        
+<!--        <RelativeLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--                <Button-->
+<!--                    android:id="@+id/zapocniIgruBtn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="60dp"-->
+<!--                    android:text="Započnite igru"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:backgroundTint="@color/zuta"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="20dp"/>-->
+<!--        </RelativeLayout>-->
 
 </androidx.drawerlayout.widget.DrawerLayout>
-
-
-

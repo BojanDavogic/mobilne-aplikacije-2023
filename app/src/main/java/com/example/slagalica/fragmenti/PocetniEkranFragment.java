@@ -17,15 +17,25 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.slagalica.MainActivity;
 import com.example.slagalica.R;
 import com.example.slagalica.aktivnosti.IgreSlagalice;
+import com.example.slagalica.konfiguracija.SocketHandler;
+import com.example.slagalica.model.Korisnik;
 import com.example.slagalica.model.Prijatelj;
 import com.example.slagalica.pomocniAlati.PrijateljiAdapter;
+import com.example.slagalica.servisi.KorisnikServis;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.socket.client.Socket;
+
 public class PocetniEkranFragment extends Fragment {
+    public static Socket socket;
+    private Bundle korisnikBundle;
+    KorisnikServis korisnikServis = new KorisnikServis();
+    Korisnik ulogovaniKorisnik = korisnikServis.getTrenutnoUlogovaniKorisnik();
     private RecyclerView recyclerView;
     private List<Prijatelj> listaPrijatelja;
     private PrijateljiAdapter prijateljiAdapter;
@@ -35,28 +45,52 @@ public class PocetniEkranFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.pocetni_ekran, container, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        if(ulogovaniKorisnik != null) {
 
-        listaPrijatelja = new ArrayList<>();
-        listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Aleksandar", true, false));
-        listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Nikola", true, false));
-        listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Marko", true, true));
-        listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Stevan", true, true));
-        listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Bojan",true, false));
-        listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Nemanja", false, false));
-        listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Tomislav", false, false));
+//            socket = SocketHandler.getSocket();
+//            socket.connect();
 
-        prijateljiAdapter = new PrijateljiAdapter(listaPrijatelja, getActivity());
-        recyclerView.setAdapter(prijateljiAdapter);
+            System.out.println(ulogovaniKorisnik.getKorisnickoIme());
+
+            recyclerView = view.findViewById(R.id.recyclerView);
+            recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL));
+            recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+            listaPrijatelja = new ArrayList<>();
+            listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Aleksandar", true, false));
+            listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Nikola", true, false));
+            listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Marko", true, true));
+            listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Stevan", true, true));
+            listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Bojan", true, false));
+            listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Nemanja", false, false));
+            listaPrijatelja.add(new Prijatelj(R.drawable.human_face, "Tomislav", false, false));
+
+            prijateljiAdapter = new PrijateljiAdapter(listaPrijatelja, getActivity());
+            recyclerView.setAdapter(prijateljiAdapter);
+        }
 
         Button pokreniIgru = (Button) view.findViewById(R.id.zapocniIgruBtn);
         pokreniIgru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Dialog popupDialog = new Dialog(getActivity());
+                popupDialog.setContentView(R.layout.loading_popup);
+                popupDialog.show();
                 Intent intent = new Intent(getActivity(), IgreSlagalice.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("korisnickoImeLeviIgrac", ulogovaniKorisnik.getKorisnickoIme());
+                bundle.putString("korisnickoImeDesniIgrac", "ImeDesnogIgraca");
+                bundle.putInt("poeniLeviIgrac", 0);
+                bundle.putInt("poeniDesniIgrac", 0);
+
+                // Postavite Bundle u Intent
+                intent.putExtras(bundle);
+
+                MainActivity.socket.emit("joinGame", ulogovaniKorisnik.getKorisnickoIme());
+                System.out.println("SOCKET " + socket);
                 startActivity(intent);
             }
         });

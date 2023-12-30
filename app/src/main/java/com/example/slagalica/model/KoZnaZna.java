@@ -2,14 +2,14 @@ package com.example.slagalica.model;
 
 import java.util.List;
 
-public class KoZnaZnaPitanje {
+public class KoZnaZna {
     private String pitanje;
     private List<String> odgovori;
     private String tacanOdgovor;
 
-    public KoZnaZnaPitanje() {}
+    public KoZnaZna() {}
 
-    public KoZnaZnaPitanje(String pitanje, List<String> odgovori, String tacanOdgovor) {
+    public KoZnaZna(String pitanje, List<String> odgovori, String tacanOdgovor) {
         this.pitanje = pitanje;
         this.odgovori = odgovori;
         this.tacanOdgovor = tacanOdgovor;

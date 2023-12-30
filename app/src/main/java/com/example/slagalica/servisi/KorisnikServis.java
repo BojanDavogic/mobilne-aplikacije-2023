@@ -15,6 +15,7 @@ import java.util.Map;
 public class KorisnikServis {
     private static Map<String, Korisnik> korisnici = new HashMap<>();
     private static String kolekcija = "registrovaniKorisnici";
+    private static Korisnik trenutnoUlogovaniKorisnik;
 
     public static int getBrojKorisnika() {
         return korisnici.size();
@@ -141,7 +142,7 @@ public class KorisnikServis {
                 .addOnFailureListener(e -> Log.w("FIRESTORE", "Greška pri ažuriranju tokena", e));
     }
 
-    public boolean prijaviKorisnika(String identifikatorPrijave, String lozinka) {
+    public Korisnik prijaviKorisnika(String identifikatorPrijave, String lozinka) {
         Korisnik korisnik = null;
         boolean prijavaEmailom = identifikatorPrijave.contains("@");
 
@@ -150,13 +151,14 @@ public class KorisnikServis {
             if ((prijavaEmailom && temp.getEmail().equals(identifikatorPrijave) && temp.getLozinka().equals(lozinka))
                     || (temp.getKorisnickoIme().equals(identifikatorPrijave) && temp.getLozinka().equals(lozinka))) {
                 korisnik = temp;
+                trenutnoUlogovaniKorisnik = korisnik;
             }
         }
-        if (korisnik != null){
-            return true;
-        } else {
-            return false;
-        }
+        return korisnik;
+    }
+
+    public Korisnik getTrenutnoUlogovaniKorisnik() {
+        return trenutnoUlogovaniKorisnik;
     }
 
     // Ako je povezan na internet, uvijek će proći, stoga uvijek vraća true
