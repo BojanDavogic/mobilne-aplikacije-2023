@@ -51,8 +51,6 @@ public class PrijateljiAdapter extends RecyclerView.Adapter<PrijateljiAdapter.Vi
         } else {
             holder.aktivnost.setVisibility(View.INVISIBLE);
         }
-
-        // Klik na karticu - ovde možete implementirati neku akciju na klik
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

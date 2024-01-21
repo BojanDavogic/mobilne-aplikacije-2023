@@ -27,53 +27,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bojan"
+                android:text="Gost"
                 android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/poeniLeviIgrac"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="30"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/zuta"/>
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tajmer"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
             android:background="@drawable/circle_border"
             android:gravity="center"
-            android:text="30"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="30sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentRight="true"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/human_face"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Stevan"
-                android:textColor="@color/white"/>
-            <TextView
-                android:id="@+id/poeniDesniIgrac"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:text="35"
-                android:textAlignment="center"
-                android:textColor="@color/zuta"/>
-        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -113,7 +88,6 @@
                             android:id="@+id/prviRed1"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/zvezda"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -121,7 +95,6 @@
                             android:id="@+id/prviRed2"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/zvezda"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -129,14 +102,12 @@
                             android:id="@+id/prviRed3"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/zvezda"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
                         <ImageButton
                             android:id="@+id/prviRed4"
                             android:layout_width="50sp"
-                            android:src="@drawable/srce"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -155,7 +126,7 @@
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
-                            android:background="@drawable/zuti_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red1Krug2"
                             android:layout_width="20sp"
@@ -203,7 +174,6 @@
                             android:id="@+id/drugiRed1"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/srce"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -211,7 +181,6 @@
                             android:id="@+id/drugiRed2"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/tref"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -219,14 +188,12 @@
                             android:id="@+id/drugiRed3"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/tref"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
                         <ImageButton
                             android:id="@+id/drugiRed4"
                             android:layout_width="50sp"
-                            android:src="@drawable/tref"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -244,7 +211,7 @@
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
-                            android:background="@drawable/zuti_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red2Krug2"
                             android:layout_width="20sp"
@@ -290,7 +257,6 @@
                             android:id="@+id/treciRed1"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/pik"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -298,7 +264,6 @@
                             android:id="@+id/treciRed2"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/srce"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -306,14 +271,12 @@
                             android:id="@+id/treciRed3"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/pik"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
                         <ImageButton
                             android:id="@+id/treciRed4"
                             android:layout_width="50sp"
-                            android:src="@drawable/pik"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -331,14 +294,14 @@
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red3Krug2"
                             android:layout_width="20sp"
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red3Krug3"
                             android:layout_width="20sp"
@@ -377,7 +340,6 @@
                             android:id="@+id/cetvrtiRed1"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/pik"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -385,7 +347,6 @@
                             android:id="@+id/cetvrtiRed2"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/srce"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -393,14 +354,12 @@
                             android:id="@+id/cetvrtiRed3"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/skocko"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
                         <ImageButton
                             android:id="@+id/cetvrtiRed4"
                             android:layout_width="50sp"
-                            android:src="@drawable/skocko"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -418,21 +377,21 @@
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red4Krug2"
                             android:layout_width="20sp"
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red4Krug3"
                             android:layout_width="20sp"
                             android:layout_height="20sp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true"
-                            android:background="@drawable/zuti_krug"/>
+                            android:background="@drawable/circle_border"/>
 
                         <View
                             android:id="@+id/red4Krug4"
@@ -464,7 +423,6 @@
                             android:id="@+id/petiRed1"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/karo"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -472,7 +430,6 @@
                             android:id="@+id/petiRed2"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/srce"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -480,14 +437,12 @@
                             android:id="@+id/petiRed3"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/pik"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
                         <ImageButton
                             android:id="@+id/petiRed4"
                             android:layout_width="50sp"
-                            android:src="@drawable/skocko"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -505,21 +460,21 @@
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red5Krug2"
                             android:layout_width="20sp"
                             android:layout_height="20sp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
                         <View
                             android:id="@+id/red5Krug3"
                             android:layout_width="20sp"
                             android:layout_height="20sp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
 
                         <View
                             android:id="@+id/red5Krug4"
@@ -527,7 +482,7 @@
                             android:layout_height="20sp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/crveni_krug"/>
+                            android:background="@drawable/circle_border"/>
 
 
                     </RelativeLayout>
@@ -714,7 +669,7 @@
                     <LinearLayout
                         android:id="@+id/rezultatRedKombinacije"
                         android:layout_width="wrap_content"
-                        android:layout_marginRight="15sp"
+                        android:layout_marginRight="70sp"
                         android:layout_height="50sp"
                         android:orientation="horizontal">
 
@@ -722,7 +677,6 @@
                             android:id="@+id/rezultatRed1"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/karo"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -730,7 +684,6 @@
                             android:id="@+id/rezultatRed2"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/srce"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
@@ -738,19 +691,25 @@
                             android:id="@+id/rezultatRed3"
                             android:layout_width="50sp"
                             android:layout_marginRight="5sp"
-                            android:src="@drawable/pik"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
                         <ImageButton
                             android:id="@+id/rezultatRed4"
                             android:layout_width="50sp"
-                            android:src="@drawable/skocko"
                             android:scaleType="fitCenter"
                             android:background="@drawable/customborder"
                             android:layout_height="match_parent"/>
 
                     </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btnObrisi"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/obrisi"
+                        android:background="@color/pozadina"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -808,19 +767,10 @@
                     android:id="@+id/zvezda"
                     android:layout_width="40sp"
                     android:layout_height="40sp"
-                    android:src="@drawable/zvezda"
+                    android:src="@drawable/zvezda_skocko"
                     android:background="@null"
                     android:scaleType="fitCenter"/>
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
-    <ImageButton
-        android:id="@+id/skockoDalje"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@null"
-        android:src="@drawable/right_arrow" />
 </FrameLayout>

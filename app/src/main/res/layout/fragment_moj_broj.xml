@@ -26,52 +26,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bojan"
+                android:text="Gost"
                 android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/poeniLeviIgrac"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="0"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/zuta"/>
         </LinearLayout>
-    <TextView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:text="60"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:background="@drawable/circle_border"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentRight="true"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/human_face"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Stevan"
-                android:textColor="@color/white"/>
-            <TextView
-                android:id="@+id/poeniDesniIgrac"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:text="0"
-                android:textAlignment="center"
-                android:textColor="@color/zuta"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tajmer"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_border"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="30sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,9 +69,10 @@
 
         <TextView
             android:id="@+id/trazeniBroj"
+            android:tag="trazeniBroj"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="123"
+            android:text=""
             android:textSize="22sp"
             android:textAlignment="center"
             android:background="@drawable/customborder"
@@ -216,10 +193,11 @@
             android:layout_marginBottom="20dp">
 
             <TextView
-                android:id="@+id/ponudjeniBroj1"
+                android:id="@+id/jednocifren1"
+                android:tag="jednocifren1"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:text="1"
+                android:text=""
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:background="@drawable/customborder"
@@ -229,10 +207,11 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="10dp"/>
             <TextView
-                android:id="@+id/ponudjeniBroj2"
+                android:id="@+id/jednocifren2"
+                android:tag="jednocifren2"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:text="2"
+                android:text=""
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:background="@drawable/customborder"
@@ -242,10 +221,11 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="10dp"/>
             <TextView
-                android:id="@+id/ponudjeniBroj3"
+                android:id="@+id/jednocifren3"
+                android:tag="jednocifren3"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:text="3"
+                android:text=""
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:background="@drawable/customborder"
@@ -255,10 +235,11 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="10dp"/>
             <TextView
-                android:id="@+id/ponudjeniBroj4"
+                android:id="@+id/jednocifren4"
+                android:tag="jednocifren4"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:text="4"
+                android:text=""
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:background="@drawable/customborder"
@@ -269,10 +250,11 @@
                 android:layout_marginHorizontal="10dp"/>
 
             <TextView
-                android:id="@+id/ponudjeniBroj5"
+                android:id="@+id/dvocifren"
+                android:tag="dvocifren"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="10"
+                android:text=""
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:background="@drawable/customborder"
@@ -282,10 +264,11 @@
                 android:layout_marginHorizontal="10dp"/>
 
             <TextView
-                android:id="@+id/ponudjeniBroj6"
+                android:id="@+id/dvocifren2"
+                android:tag="dvocifren2"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:text="100"
+                android:text=""
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:background="@drawable/customborder"
@@ -303,13 +286,23 @@
             android:orientation="horizontal"
             android:layout_below="@id/racunskeOperacije"
             android:layout_marginTop="10dp"
-            android:paddingHorizontal="30dp">
+            android:paddingLeft="20dp">
 
             <TextView
                 android:id="@+id/rezultat"
-                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:textSize="22dp"
+                android:layout_width="310dp"
+                android:layout_marginRight="10dp"
                 android:layout_height="50dp"
                 android:background="@drawable/customborder"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnObrisi"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:src="@drawable/obrisi"
+                android:background="@color/pozadina"/>
 
         </LinearLayout>
 
@@ -322,6 +315,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnStop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Stop"
@@ -329,6 +323,7 @@
                 android:textColor="@color/black"
                 android:layout_marginRight="20dp"/>
             <Button
+                android:id="@+id/btnPotvrdi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Potvrdi"
@@ -337,13 +332,4 @@
                 android:layout_marginLeft="20dp"/>
         </LinearLayout>
     </RelativeLayout>
-    <ImageButton
-        android:id="@+id/mojBrojDalje"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@null"
-        android:src="@drawable/right_arrow" />
 </FrameLayout>

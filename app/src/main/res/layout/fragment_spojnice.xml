@@ -21,31 +21,34 @@
             android:layout_alignParentLeft="true">
 
             <ImageView
+                android:id="@+id/leviIgracSlika"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/human_face"/>
             <TextView
+                android:id="@+id/korisnickoImeLeviIgrac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bojan"
+                android:text=""
                 android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/poeniLeviIgrac"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="20"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/zuta"/>
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tajmer"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
             android:background="@drawable/circle_border"
             android:gravity="center"
-            android:text="30"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="30sp" />
 
@@ -57,20 +60,22 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/desniIgracSlika"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/human_face"/>
             <TextView
+                android:id="@+id/korisnickoImeDesniIgrac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stevan"
+                android:text=""
                 android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/poeniDesniIgrac"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="20"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/zuta"/>
         </LinearLayout>
@@ -83,6 +88,7 @@
         android:layout_marginTop="140dp">
 
         <TextView
+            android:id="@+id/naslov"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30sp"
@@ -90,7 +96,7 @@
             android:layout_marginEnd="30sp"
             android:layout_marginBottom="30sp"
             android:background="@color/zuta"
-            android:text="Spojite imena i prezimena poznatih sportista"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -112,7 +118,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Novak"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -123,7 +129,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Vidic"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -134,7 +140,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Nemanja"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -145,7 +151,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Ronaldo"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -156,7 +162,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Ivana"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -167,7 +173,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Djokovic"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -178,7 +184,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Kristijano"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -189,7 +195,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Spanovic"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -200,7 +206,7 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Lionel"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
@@ -211,19 +217,19 @@
                 android:layout_gravity="fill"
                 android:layout_margin="10sp"
                 android:background="@drawable/customborder"
-                android:text="Mesi"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
 
         </GridLayout>
     </RelativeLayout>
-    <ImageButton
-        android:id="@+id/spojniceDalje"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@null"
-        android:src="@drawable/right_arrow" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/spojniceDalje"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|right"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:background="@null"-->
+<!--        android:src="@drawable/right_arrow" />-->
 </FrameLayout>

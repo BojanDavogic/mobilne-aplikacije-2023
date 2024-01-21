@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "32892953278",
+    "project_id": "slagalica-mobilne-aplikacije",
+    "storage_bucket": "slagalica-mobilne-aplikacije.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32892953278:android:1f18d6ea9c0c844a0c74ef",
+        "android_client_info": {
+          "package_name": "com.example.slagalica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX1Ya__ZOxxzrDCNMutOAZ9KKGBe618Rg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32892953278:android:8661017ce5c8fe1a0c74ef",
+        "android_client_info": {
+          "package_name": "com.example.vezbe8"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX1Ya__ZOxxzrDCNMutOAZ9KKGBe618Rg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
