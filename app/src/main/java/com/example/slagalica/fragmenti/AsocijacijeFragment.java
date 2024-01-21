@@ -101,7 +101,7 @@ public class AsocijacijeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         Bundle bundle = getArguments();
-        if (bundle != null && korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+        if (bundle != null || (korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals(""))) {
             korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
             korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
             poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
@@ -116,7 +116,8 @@ public class AsocijacijeFragment extends Fragment {
             textUsernameRight.setText(korisnickoImeDesniIgrac);
             textPoeniLeft.setText(String.valueOf(poeniLeviIgrac));
             textPoeniRight.setText(String.valueOf(poeniDesniIgrac));
-        } else {
+        }
+        else {
             ImageView desniIgracSlika = view.findViewById(R.id.desniIgracSlika);
             desniIgracSlika.setImageResource(0);
             textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
@@ -595,7 +596,7 @@ public class AsocijacijeFragment extends Fragment {
 
     private void pokreniTajmerIgre() {
         if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
-            blockInput();
+//            blockInput();
         }
         tajmerIgra = new CountDownTimer(trajanjeIgre, 1000) {
             @Override
@@ -772,6 +773,7 @@ public class AsocijacijeFragment extends Fragment {
                             IgreSlagalice.socket.emit("invert");
                         }
                         fragmentBundle.putInt("runda", ((IgreSlagalice)getActivity()).getRunda());
+//                        blockInput();
                     } else {
                         fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);
                         fragmentBundle.putString("korisnickoImeDesniIgrac", korisnickoImeDesniIgrac);

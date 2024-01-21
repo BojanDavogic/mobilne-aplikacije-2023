@@ -44,8 +44,6 @@ import io.socket.emitter.Emitter;
 
 public class SpojniceFragment extends Fragment {
 
-    TextView poeniLevogIgraca;
-
     TextView textUsernameRight;
     TextView textPoeniLeft;
     TextView textPoeniRight;
@@ -96,8 +94,6 @@ public class SpojniceFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spojnice, container, false);
         disableTouchFragment = new DisableTouchFragment(requireContext());
-//        poeniLevogIgraca = view.findViewById(R.id.poeniLeviIgrac);
-//        poeniLevogIgraca.setText(String.valueOf(prenetiPoeni));
 
         tajmerTextView = view.findViewById(R.id.tajmer);
 
@@ -116,7 +112,7 @@ public class SpojniceFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         Bundle bundle = getArguments();
-        if (bundle != null && korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+        if (bundle != null || (korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals(""))) {
             korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
             korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
             poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
@@ -293,7 +289,7 @@ public class SpojniceFragment extends Fragment {
 
     private void pokreniTajmerIgre2(long trajanjeIgre) {
         if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
-            blockInput();
+//            blockInput();
         }
         tajmerIgra = new CountDownTimer(trajanjeIgre, 1000) {
             @Override
@@ -354,6 +350,7 @@ public class SpojniceFragment extends Fragment {
                 dialog.dismiss();
                 Bundle fragmentBundle = new Bundle();
                 if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                    blockInput();
                     if (((IgreSlagalice)getActivity()).getRunda() == 1) {
                         ((IgreSlagalice)getActivity()).setRunda(2);
                         fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);

@@ -60,7 +60,6 @@ public class IgreSlagalice extends AppCompatActivity {
             int poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
             int poeniDesniIgrac = bundle.getInt("poeniDesniIgrac", 0);
 
-            // Sada možete postaviti ove podatke gde je potrebno, na primer u fragment
             Bundle fragmentBundle = new Bundle();
             fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);
             fragmentBundle.putString("korisnickoImeDesniIgrac", korisnickoImeDesniIgrac);
@@ -71,7 +70,7 @@ public class IgreSlagalice extends AppCompatActivity {
             asocijacijeFragment.setArguments(fragmentBundle);
 
         }
-        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, mojBrojFragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, koZnaZnaFragment).commitAllowingStateLoss();
 
     }
 }

@@ -95,7 +95,8 @@ public class KoZnaZnaFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         Bundle bundle = getArguments();
-        if (bundle != null) {
+        System.out.println("BUNDLE" + bundle);
+        if (bundle != null || korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
             korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
             korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
             poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
@@ -110,7 +111,8 @@ public class KoZnaZnaFragment extends Fragment {
             textUsernameRight.setText(korisnickoImeDesniIgrac);
             textPoeniLeft.setText(String.valueOf(poeniLeviIgrac));
             textPoeniRight.setText(String.valueOf(poeniDesniIgrac));
-        } else {
+        }
+        else {
             ImageView desniIgracSlika = view.findViewById(R.id.desniIgracSlika);
             desniIgracSlika.setImageResource(0);
             textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
@@ -281,12 +283,10 @@ public class KoZnaZnaFragment extends Fragment {
                                     String playerName = it.next();
                                     if (playerName.equals(korisnickoImeLeviIgrac)) {
                                         poeniLeviIgrac = data.getInt(playerName);
-                                        getActivity().runOnUiThread(() ->
-                                                textPoeniLeft.setText(Integer.toString(poeniLeviIgrac)));
+                                                textPoeniLeft.setText(Integer.toString(poeniLeviIgrac));
                                     } else if (playerName.equals(korisnickoImeDesniIgrac)) {
                                         poeniDesniIgrac = data.getInt(playerName);
-                                        getActivity().runOnUiThread(() ->
-                                                textPoeniRight.setText(Integer.toString(poeniDesniIgrac)));
+                                                textPoeniRight.setText(Integer.toString(poeniDesniIgrac));
                                     }
                                 }
                             } catch (JSONException e) {

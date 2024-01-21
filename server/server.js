@@ -74,35 +74,26 @@ io.on('connection', (socket) => {
         console.log(currentPlayer + ' turn');
 
         trenutniPotez++;
-
-        // Emitujte događaj da drugi igrač zna da je došlo do promene u redosledu
-        io.emit('updateTurn', trenutniPotez);
     });
 
-    // Ovo je događaj koji drugi igrač sluša kako bi znao da je došlo do promene u redosledu
-    socket.on('updateTurn', (newTurn) => {
-        trenutniPotez = newTurn;
+    socket.on('resetTurn', () => {
+        trenutniPotez = 0;
     });
 
-    // Dodatni kod za ostale događaje
-    // ...
+    socket.on('getSwitcher', () => {
+        io.emit('switcher', ++switcher);
+    });
+
+    socket.on('resetSwitcher', () => {
+        switcher = 0;
+    });
 
     socket.on('invert', () => {
-        if (inverter === 0) inverter = 1;
-        else inverter = 0;
-
-        // Emitujte događaj da drugi igrač zna da je došlo do promene u inverteru
-        io.emit('updateInverter', inverter);
+        if (inverter === 0)
+            inverter = 1;
+        else
+            inverter = 0;
     });
-
-    // Ovo je događaj koji drugi igrač sluša kako bi znao da je došlo do promene u inverteru
-    socket.on('updateInverter', (newInverter) => {
-        inverter = newInverter;
-    });
-
-    // Dodatni kod za ostale događaje
-    // ...
-
 
     // koZnaZna
 
