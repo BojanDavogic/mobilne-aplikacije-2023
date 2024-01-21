@@ -21,13 +21,15 @@
             android:layout_alignParentLeft="true">
 
             <ImageView
+                android:id="@+id/leviIgracSlika"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/human_face"/>
             <TextView
+                android:id="@+id/korisnickoImeLeviIgrac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gost"
+                android:text=""
                 android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/poeniLeviIgrac"
@@ -50,31 +52,33 @@
             android:textColor="@color/white"
             android:textSize="30sp" />
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:gravity="center">-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
 
-<!--            <ImageView-->
-<!--                android:layout_width="80dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:src="@drawable/human_face"/>-->
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Stevan"-->
-<!--                android:textColor="@color/white"/>-->
-<!--            <TextView-->
-<!--                android:id="@+id/poeniDesniIgrac"-->
-<!--                android:layout_width="60dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="30sp"-->
-<!--                android:text="20"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textColor="@color/zuta"/>-->
-<!--        </LinearLayout>-->
+            <ImageView
+                android:id="@+id/desniIgracSlika"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/human_face"/>
+            <TextView
+                android:id="@+id/korisnickoImeDesniIgrac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/poeniDesniIgrac"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/zuta"/>
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -219,13 +223,13 @@
 
         </GridLayout>
     </RelativeLayout>
-    <ImageButton
-        android:id="@+id/spojniceDalje"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@null"
-        android:src="@drawable/right_arrow" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/spojniceDalje"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|right"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:background="@null"-->
+<!--        android:src="@drawable/right_arrow" />-->
 </FrameLayout>

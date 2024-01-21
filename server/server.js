@@ -17,16 +17,24 @@ app.get('/', function (req, res) {
 });
 
 // pokretanje servera
-server.listen(port, '192.168.170.96', () => {
+server.listen(port, '192.168.0.19', () => {
     console.log(`Server running on port ${port}`);
 });
 
+class KoZnaZnaAnswer {
+    constructor(correct, timeOf, player) {
+        this.correct = correct;
+        this.timeOf = timeOf;
+        this.player = player;
+    }
+}
+
 // podaci za igru
-let players = [];
-let playerSocket = {};
-let scores = {};
-let currentTurn = 0;
-let koZnaZnaAnswers = [];
+let igraci = [];
+let igraciSocket = {};
+let rezultati = {};
+let trenutniPotez = 0;
+let koZnaZnaOdogovori = [];
 let switcher = 0;
 let inverter = 0;
 
@@ -36,21 +44,21 @@ io.on('connection', (socket) => {
     console.log('A user connected with socket id: ' + socket.id);
 
     socket.on('joinGame', (playerName) => {
-        // Provjeri da li je korisnik već u igri
-        const isPlayerAlreadyJoined = players.includes(playerName);
+        const isPlayerAlreadyJoined = igraci.includes(playerName);
 
-        if (!isPlayerAlreadyJoined && players.length < 2) {
-            players.push(playerName);
-            playerSocket[socket.id] = playerName;
-            scores[playerName] = 0;
-            console.log('Player joined: ' + playerName + '. Total players: ' + players.length);
-            io.emit('playerJoined', playerName);
+        if (!isPlayerAlreadyJoined && igraci.length < 2) {
+            igraci.push(playerName);
+            igraciSocket[socket.id] = playerName;
+            rezultati[playerName] = 0;
+            console.log('Player joined: ' + playerName + '. Total players: ' + igraci.length);
+            if (igraci.length === 2) {
+                io.emit('playerJoined', igraci[0], igraci[1]);
+            }
 
-            if (players.length === 2) {
-                io.emit('startGame', playerSocket);
+            if (igraci.length === 2) {
+                io.emit('startGame', igraciSocket);
             }
         } else {
-            // Korisnik je već u igri, možete poslati odgovor da ne može ponovo pristupiti
             socket.emit('cannotJoinGame', 'You are already in the game.');
             console.log('You are already in the game.');
         }
@@ -59,54 +67,147 @@ io.on('connection', (socket) => {
 
     // kod za sve igre
     socket.on('getTurn', () => {
-        const currentPlayerIndex = currentTurn % 4 < 2 ?
-            (currentTurn % 2 === 0 ? 0 + inverter : 1 - inverter) :
-            (currentTurn % 4 === 2 ? 0 + inverter : 1 - inverter);
-        const currentPlayer = players[currentPlayerIndex];
+        const currentPlayerIndex = (trenutniPotez + inverter) % 2;
+        const currentPlayer = igraci[currentPlayerIndex];
 
         io.emit('turn', currentPlayer);
         console.log(currentPlayer + ' turn');
 
-        setTimeout(() => {
-            currentTurn++;
-        }, 1000);
+        trenutniPotez++;
+
+        // Emitujte događaj da drugi igrač zna da je došlo do promene u redosledu
+        io.emit('updateTurn', trenutniPotez);
     });
 
-    socket.on('resetTurn', () => {
-        currentTurn = 0;
+    // Ovo je događaj koji drugi igrač sluša kako bi znao da je došlo do promene u redosledu
+    socket.on('updateTurn', (newTurn) => {
+        trenutniPotez = newTurn;
     });
 
-    socket.on('getSwitcher', () => {
-        io.emit('switcher', ++switcher);
-    });
-
-    socket.on('resetSwitcher', () => {
-        switcher = 0;
-    });
+    // Dodatni kod za ostale događaje
+    // ...
 
     socket.on('invert', () => {
-        if (inverter === 0)
-            inverter = 1;
-        else
-            inverter = 0;
+        if (inverter === 0) inverter = 1;
+        else inverter = 0;
+
+        // Emitujte događaj da drugi igrač zna da je došlo do promene u inverteru
+        io.emit('updateInverter', inverter);
     });
 
+    // Ovo je događaj koji drugi igrač sluša kako bi znao da je došlo do promene u inverteru
+    socket.on('updateInverter', (newInverter) => {
+        inverter = newInverter;
+    });
+
+    // Dodatni kod za ostale događaje
+    // ...
+
+
+    // koZnaZna
+
+    socket.on('koZnaZnaAnswer', (correct, timeOf, player) => {
+        let answer = new KoZnaZnaAnswer(correct, timeOf, player);
+        koZnaZnaOdogovori.push(answer);
+    });
+
+    socket.on('koZnaZnaAnswerCheck', async () => {
+        console.log("Usli smo u check");
+        console.log(JSON.stringify(koZnaZnaOdogovori));
+        if (koZnaZnaOdogovori.length === 2) {
+            console.log("ODGOVORI: " + JSON.stringify(koZnaZnaOdogovori));
+            let answer1 = koZnaZnaOdogovori[0];
+            let answer2 = koZnaZnaOdogovori[1];
+
+            if ((answer1.correct && answer2.correct && answer1.timeOf < answer2.timeOf)
+                || (answer1.correct && !answer2.correct)) {
+                rezultati[answer1.player] += 10;
+            } else if (answer2.correct && answer1.correct && answer2.timeOf < answer1.timeOf
+                || (answer2.correct && !answer1.correct)) {
+                rezultati[answer2.player] += 10;
+            }
+
+            if (!answer1.correct) {
+                rezultati[answer1.player] -= 5;
+            }
+
+            if (!answer2.correct) {
+                rezultati[answer2.player] -= 5;
+            }
+
+            console.log("REZ. 2 igraca");
+            console.log("REZULTATI: " + JSON.stringify(rezultati));
+            koZnaZnaOdogovori = [];
+        } else if (koZnaZnaOdogovori.length === 1) {
+            console.log("ODGOVOR: " + JSON.stringify(koZnaZnaOdogovori));
+            let answer1 = koZnaZnaOdogovori[0];
+
+            if (answer1.correct) {
+                rezultati[answer1.player] += 10;
+            }
+
+            if (!answer1.correct) {
+                rezultati[answer1.player] -= 5;
+            }
+
+            console.log("REZ. 1 igrac");
+            console.log("REZULTATI: " + JSON.stringify(rezultati));
+            koZnaZnaOdogovori = [];
+        }
+        io.emit('scoreUpdate', rezultati);
+    });
+
+    // spojnice
+
+    socket.on('spojniceParovi', (prvoDugme, drugoDugme, tacnost) => {
+        console.log(prvoDugme);
+        console.log(drugoDugme);
+        console.log(tacnost);
+        io.emit('spojniceAzuriraj', prvoDugme, drugoDugme, tacnost);
+    });
+
+    socket.on("zavrsenPotez", (tacnost) => {
+        io.emit("trenutnoStanjeIgre", tacnost);
+    });
+
+    socket.on('spojniceSolution', (solved) => {
+        io.emit('spojniceUpdate', solved);
+    });
+
+    socket.on('spojniceScoreUpdate', (player1, score1, player2, score2) => {
+        rezultati[player1] = score1;
+        rezultati[player2] = score2;
+
+        io.emit('scoreUpdate', rezultati);
+        console.log(rezultati);
+    });
+
+    socket.on('endSpojnice', () => {
+        io.emit('endSpojnice');
+        console.log('End of spojnice');
+    });
 
     // asocijacije
+
     socket.on('asocijacijeOpened', (field) => {
         io.emit('asocijacijeOpen', field);
+        console.log("Field opened: " + field);
     });
 
-    socket.on('asocijacijeSolution', (solved) => {
-        io.emit('asocijacijeSolved', solved);
+    socket.on('asocijacijeSolution', (polje, resenjeKolone) => {
+        io.emit('asocijacijeSolved', polje, resenjeKolone);
     });
 
-    socket.on('asocijacijeScoreUpdate', (player1, score1, player2, score2) => {
-        scores[player1] = score1;
-        scores[player2] = score2;
+    socket.on('asocijacijeKonacnoResenje', (field) => {
+        io.emit('asocijacijeKonacno', field);
+    });
 
-        io.emit('scoreUpdate', scores);
-        console.log(scores);
+    socket.on('asocijacijeScoreUpdate', (igrac1, rezultat1, igrac2, rezultat2) => {
+        rezultati[igrac1] = rezultat1;
+        rezultati[igrac2] = rezultat2;
+
+        io.emit('scoreUpdate', rezultati);
+        console.log(rezultati);
     });
 
     socket.on('endAsocijacije', () => {
@@ -118,10 +219,10 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('A user disconnected');
 
-        const name = playerSocket[socket.id];
-        const index = players.indexOf(name);
-        players.splice(index, 1);
-        delete scores[name];
+        const name = igraciSocket[socket.id];
+        const index = igraci.indexOf(name);
+        igraci.splice(index, 1);
+        delete rezultati[name];
 
         io.emit('playerLeft', name);
     });

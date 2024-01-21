@@ -16,13 +16,13 @@ public class GostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pocetni_ekran);
 
-//        Button pokreniIgru = (Button) findViewById(R.id.zapocniIgruBtn);
-//        pokreniIgru.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(GostActivity.this, IgreSlagalice.class);
-//                startActivity(intent);
-//            }
-//        });
+        Button pokreniIgru = (Button) findViewById(R.id.zapocniIgruBtn);
+        pokreniIgru.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GostActivity.this, IgreSlagalice.class);
+                startActivity(intent);
+            }
+        });
     }
 }

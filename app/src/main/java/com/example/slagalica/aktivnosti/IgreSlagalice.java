@@ -1,5 +1,7 @@
 package com.example.slagalica.aktivnosti;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,28 +19,40 @@ import com.example.slagalica.fragmenti.SpojniceFragment;
 import com.example.slagalica.konfiguracija.SocketHandler;
 
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class IgreSlagalice extends AppCompatActivity {
 
     public static Socket socket;
 
-    private int brojIgranja = 0;
+    private int runda = 1;
+
+    public int getRunda() {
+        return runda;
+    }
+
+    public void setRunda(int runda) {
+        this.runda = runda;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_igre_slagalice);
 
-        socket = SocketHandler.getSocket();
-        socket.connect();
-
-        System.out.println("SOCKET IGRE SLAGALICE: " + socket);
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
         Bundle bundle = getIntent().getExtras();
+        if(bundle != null && !bundle.getString("korisnickoImeLeviIgrac").equals("")){
+            socket = SocketHandler.getSocket();
+            socket.connect();
+        }
+        KoZnaZnaFragment koZnaZnaFragment = new KoZnaZnaFragment();
+        SpojniceFragment spojniceFragment = new SpojniceFragment();
+        AsocijacijeFragment asocijacijeFragment = new AsocijacijeFragment();
+
         if (bundle != null) {
             String korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
             String korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
@@ -46,15 +60,17 @@ public class IgreSlagalice extends AppCompatActivity {
             int poeniDesniIgrac = bundle.getInt("poeniDesniIgrac", 0);
 
             // Sada možete postaviti ove podatke gde je potrebno, na primer u fragment
-            AsocijacijeFragment asocijacijeFragment = new AsocijacijeFragment();
             Bundle fragmentBundle = new Bundle();
             fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);
             fragmentBundle.putString("korisnickoImeDesniIgrac", korisnickoImeDesniIgrac);
             fragmentBundle.putInt("poeniLeviIgrac", poeniLeviIgrac);
             fragmentBundle.putInt("poeniDesniIgrac", poeniDesniIgrac);
+            koZnaZnaFragment.setArguments(fragmentBundle);
+            spojniceFragment.setArguments(fragmentBundle);
             asocijacijeFragment.setArguments(fragmentBundle);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, asocijacijeFragment).commitAllowingStateLoss();
         }
+        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, koZnaZnaFragment).commitAllowingStateLoss();
+
     }
 }

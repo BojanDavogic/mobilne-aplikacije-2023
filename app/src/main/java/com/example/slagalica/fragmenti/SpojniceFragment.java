@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -18,11 +20,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.slagalica.R;
+import com.example.slagalica.aktivnosti.IgreSlagalice;
+import com.example.slagalica.pomocniAlati.DisableTouchFragment;
 import com.example.slagalica.pomocniAlati.SharedData;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,9 +40,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import io.socket.emitter.Emitter;
+
 public class SpojniceFragment extends Fragment {
 
-    TextView poeniLeviIgrac;
+    TextView poeniLevogIgraca;
+
+    TextView textUsernameRight;
+    TextView textPoeniLeft;
+    TextView textPoeniRight;
+
+    TextView textUsernameLeft;
+
+    String korisnickoImeLeviIgrac;
+    String korisnickoImeDesniIgrac;
+    int poeniLeviIgrac;
+    int poeniDesniIgrac;
+    int pokusaj = 1;
+    DisableTouchFragment disableTouchFragment;
 
     SharedData sharedData = SharedData.getInstance();
     int prenetiPoeni = sharedData.getPoeniIgraca();
@@ -61,20 +82,22 @@ public class SpojniceFragment extends Fragment {
     private AppCompatButton red5kolona2;
 
     private Map<String, Object> polja;
+    private String trenutniIgrac = "levi";
+    private int brojacParova = 0;
     private int brojac = 0;
+    private int brojacNetacnih = 0;
+    private ArrayList<AppCompatButton> pogresnaPolja = new ArrayList<>();
 
     private AppCompatButton poslednjeKliknutoIzKolone1;
     private AppCompatButton poslednjeKliknutoIzKolone2;
-
-
-    ImageButton btnSpojniceDalje;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spojnice, container, false);
-        poeniLeviIgrac = view.findViewById(R.id.poeniLeviIgrac);
-        poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
+        disableTouchFragment = new DisableTouchFragment(requireContext());
+//        poeniLevogIgraca = view.findViewById(R.id.poeniLeviIgrac);
+//        poeniLevogIgraca.setText(String.valueOf(prenetiPoeni));
 
         tajmerTextView = view.findViewById(R.id.tajmer);
 
@@ -91,8 +114,35 @@ public class SpojniceFragment extends Fragment {
         red5kolona2 = view.findViewById(R.id.red5kolona2);
 
         db = FirebaseFirestore.getInstance();
+
+        Bundle bundle = getArguments();
+        if (bundle != null && korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+            korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
+            korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
+            poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
+            poeniDesniIgrac = bundle.getInt("poeniDesniIgrac", 0);
+
+            textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
+            textUsernameRight = view.findViewById(R.id.korisnickoImeDesniIgrac);
+            textPoeniLeft = view.findViewById(R.id.poeniLeviIgrac);
+            textPoeniRight = view.findViewById(R.id.poeniDesniIgrac);
+
+            textUsernameLeft.setText(korisnickoImeLeviIgrac);
+            textUsernameRight.setText(korisnickoImeDesniIgrac);
+            textPoeniLeft.setText(String.valueOf(poeniLeviIgrac));
+            textPoeniRight.setText(String.valueOf(poeniDesniIgrac));
+        }
+        else {
+            ImageView desniIgracSlika = view.findViewById(R.id.desniIgracSlika);
+            desniIgracSlika.setImageResource(0);
+            textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
+            textUsernameLeft.setText("Gost");
+            textPoeniLeft = view.findViewById(R.id.poeniLeviIgrac);
+            textPoeniLeft.setText(String.valueOf(prenetiPoeni));
+        }
+
         ucitajPoljaIzFirestore();
-        pokreniTajmerIgre();
+        pokreniTajmerIgre(trajanjeIgre);
 
 //        onemoguciPoljaUKoloni();
 //        onemoguciPolja();
@@ -206,19 +256,13 @@ public class SpojniceFragment extends Fragment {
                 }
             }
         });
-
-        btnSpojniceDalje = view.findViewById(R.id.spojniceDalje);
-        btnSpojniceDalje.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SkockoFragment skockoFragment = new SkockoFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.igreSlagaliceContainer, skockoFragment).commit();
-            }
-        });
         return view;
     }
 
-    private void pokreniTajmerIgre() {
+    private void pokreniTajmerIgre(long trajanjeIgre) {
+        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
+            blockInput();
+        }
         tajmerIgra = new CountDownTimer(trajanjeIgre, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -232,10 +276,48 @@ public class SpojniceFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){}
+                        else {
+                            prenetiPoeni += poeni;
+                            textPoeniLeft.setText(String.valueOf(prenetiPoeni));
+                            sharedData.setPoeniIgraca(prenetiPoeni);
+                            prikaziObavestenje("Vreme je isteklo\nOsvojili ste " + poeni + " bodova\nSledeca igra pocinje za:");
+                        }
+                    }
+                }, 2000);
+            }
+        };
+
+        tajmerIgra.start();
+    }
+
+    private void pokreniTajmerIgre2(long trajanjeIgre) {
+        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
+            blockInput();
+        }
+        tajmerIgra = new CountDownTimer(trajanjeIgre, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tajmerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+                if (millisUntilFinished <= 10000) {
+                    tajmerTextView.setTextColor(Color.RED);
+                }
+            }
+            @Override
+            public void onFinish() {
+//                blockInput();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
                         prenetiPoeni += poeni;
-                        poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
-                        sharedData.setPoeniIgraca(prenetiPoeni);
-                        prikaziObavestenje("Vreme je isteklo\nOsvojili ste " + poeni + " bodova\nSledeca igra pocinje za:");
+                        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
+                            prikaziObavestenje("Vreme je isteklo\nSledeca igra pocinje za:");
+                        }
+                        else {
+                            textPoeniLeft.setText(String.valueOf(prenetiPoeni));
+                            sharedData.setPoeniIgraca(prenetiPoeni);
+                            prikaziObavestenje("Vreme je isteklo\nOsvojili ste " + poeni + " bodova\nSledeca igra pocinje za:");
+                        }
                     }
                 }, 2000);
             }
@@ -245,6 +327,7 @@ public class SpojniceFragment extends Fragment {
     }
 
     private void prikaziObavestenje(String poruka) {
+        final int[] inverted = {0};
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Igra je zavrsena");
         builder.setMessage(poruka);
@@ -269,33 +352,38 @@ public class SpojniceFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-                tajmerIgra.cancel();
-                prikaziBodoveObavestenje();
+                Bundle fragmentBundle = new Bundle();
+                if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                    if (((IgreSlagalice)getActivity()).getRunda() == 1) {
+                        ((IgreSlagalice)getActivity()).setRunda(2);
+                        fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);
+                        fragmentBundle.putString("korisnickoImeDesniIgrac", korisnickoImeDesniIgrac);
+                        fragmentBundle.putInt("poeniLeviIgrac", poeniLeviIgrac);
+                        fragmentBundle.putInt("poeniDesniIgrac", poeniDesniIgrac);
+                        prikaziSpojniceFragment(fragmentBundle);
+
+                        if ((poeniLeviIgrac > poeniDesniIgrac || (poeniLeviIgrac == poeniDesniIgrac &&
+                                korisnickoImeLeviIgrac.length() > korisnickoImeDesniIgrac.length())) && inverted[0] == 0) {
+                            inverted[0]++;
+                            IgreSlagalice.socket.emit("invert");
+                        }
+                        fragmentBundle.putInt("runda", ((IgreSlagalice)getActivity()).getRunda());
+                    } else {
+                        fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);
+                        fragmentBundle.putString("korisnickoImeDesniIgrac", korisnickoImeDesniIgrac);
+                        fragmentBundle.putInt("poeniLeviIgrac", poeniLeviIgrac);
+                        fragmentBundle.putInt("poeniDesniIgrac", poeniDesniIgrac);
+                        prikaziAsocijacijeFragment(fragmentBundle);
+                        ((IgreSlagalice)getActivity()).setRunda(1);
+                        inverted[0]--;
+                    }
+                } else {
+                    prikaziAsocijacijeFragment(new Bundle());
+                }
             }
         };
 
         tajmerPrikaz.start();
-    }
-
-    private void prikaziBodoveObavestenje() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Osvojeni bodovi");
-        builder.setMessage("Osvojili ste ukupno " + prenetiPoeni + " poena.");
-
-        builder.setPositiveButton("Ok", (dialog, which) -> {
-            // Idi na početni ekran
-            idiNaPocetniEkran();
-        });
-
-        builder.setCancelable(false);
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void idiNaPocetniEkran() {
-        PocetniEkranFragment pocetniEkranFragment = new PocetniEkranFragment();
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.igreSlagaliceContainer, pocetniEkranFragment).commit();
     }
 
     private void prikaziOdgovor(String poruka) {
@@ -342,32 +430,17 @@ public class SpojniceFragment extends Fragment {
 
     private void ucitajPoljaIzFirestore() {
         db.collection("spojnice")
+                .document("kombinacija" + ((IgreSlagalice)getActivity()).getRunda())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        List<String> dokumenti = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            dokumenti.add(document.getId());
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            polja = document.getData();
+                            prikaziPolja(); // Prikazujemo sva polja
+                        } else {
+                            Log.d(TAG, "Dokument ne postoji");
                         }
-                        int randomIndex = new Random().nextInt(dokumenti.size());
-                        String randomDokument = dokumenti.get(randomIndex);
-
-                        db.collection("spojnice").document(randomDokument)
-                                .get()
-                                .addOnCompleteListener(task2 -> {
-                                    if (task2.isSuccessful()) {
-                                        DocumentSnapshot document2 = task2.getResult();
-                                        if (document2.exists()) {
-                                            polja = document2.getData();
-                                            prikaziPolja(); // Prikazujemo sva polja
-                                        } else {
-                                            Log.d(TAG, "Dokument ne postoji");
-                                        }
-                                    } else {
-                                        Log.e(TAG, "Greška prilikom dobavljanja dokumenata: ", task2.getException());
-                                    }
-                                });
                     } else {
                         Log.e(TAG, "Greška prilikom dobavljanja dokumenata: ", task.getException());
                     }
@@ -406,26 +479,168 @@ public class SpojniceFragment extends Fragment {
         }
 
         if (tacnoSpojeno) {
-            poeni += 2;
-            prvoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
-            drugoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
-            prvoDugme.setEnabled(false);
-            drugoDugme.setEnabled(false);
+            if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
+                IgreSlagalice.socket.emit("spojniceParovi", spojeno1, spojeno2, true);
+            } else {
+                poeni += 2;
+                prvoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
+                drugoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
+                prvoDugme.setEnabled(false);
+                drugoDugme.setEnabled(false);
+            }
         } else {
-            prvoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.wrong_answer));
-            drugoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.customborder));
-            prvoDugme.setEnabled(false);
+            if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
+                IgreSlagalice.socket.emit("spojniceParovi", spojeno1, spojeno2, false);
+            } else {
+                prvoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.wrong_answer));
+                drugoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.customborder));
+                prvoDugme.setEnabled(false);
+            }
         }
 
-        brojac+=1;
-
-        if(brojac == 5){
-            prenetiPoeni += poeni;
-            poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
-            sharedData.setPoeniIgraca(prenetiPoeni);
-
-            prikaziObavestenje("Osvojili ste " + poeni + " poena");
+        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
+            brojacParova++;
         }
+        else {
+            brojac += 1;
+
+            if (brojac == 5) {
+                prenetiPoeni += poeni;
+                textPoeniLeft.setText(String.valueOf(prenetiPoeni));
+                sharedData.setPoeniIgraca(prenetiPoeni);
+
+                prikaziObavestenje("Osvojili ste " + poeni + " poena");
+            }
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view,Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+            IgreSlagalice.socket.on("spojniceAzuriraj", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String prvoDugmeStr = args[0].toString();
+                                String drugoDugmeStr = args[1].toString();
+                                boolean tacnost = (Boolean) args[2];
+
+                                AppCompatButton prvoDugme = getButtonForDugme(prvoDugmeStr);
+                                AppCompatButton drugoDugme = getButtonForDugme(drugoDugmeStr);
+
+                                if(tacnost){
+                                    if(trenutniIgrac.equals(korisnickoImeLeviIgrac)){
+                                        poeniLeviIgrac += 2;
+                                        textPoeniLeft.setText(String.valueOf(poeniLeviIgrac));
+                                    } else {
+                                        poeniDesniIgrac += 2;
+                                        textPoeniRight.setText(String.valueOf(poeniDesniIgrac));
+                                    }
+                                    prvoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
+                                    drugoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.correct_answer));
+                                    prvoDugme.setEnabled(false);
+                                    drugoDugme.setEnabled(false);
+                                } else {
+                                    brojacNetacnih++;
+                                    pogresnaPolja.add(prvoDugme);
+                                    prvoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.customborder));
+                                    drugoDugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.customborder));
+                                    prvoDugme.setEnabled(false);
+                                }
+                                if(brojacParova == 5 && brojacNetacnih != 0 && trenutniIgrac.equals(korisnickoImeLeviIgrac)){
+//                                    for(AppCompatButton dugme : pogresnaPolja) {
+//                                        dugme.setEnabled(true);
+//                                        dugme.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.wrong_answer));
+//                                    }
+                                    blockInput();
+                                    IgreSlagalice.socket.emit("zavrsenPotez", tacnost);
+//                                    trenutniIgrac = "desni";
+                                }
+                            }
+                        });
+
+
+                    }
+                }
+            });
+
+            IgreSlagalice.socket.on("trenutnoStanjeIgre", args -> {
+                boolean tacnost = (boolean) args[0];
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        for(AppCompatButton dugme : pogresnaPolja) {
+                            dugme.setEnabled(true);
+                        }
+                        tajmerIgra.cancel();
+                        pokreniTajmerIgre2(10000);
+                    });
+                }
+            });
+
+        }
+    }
+
+    private AppCompatButton getButtonForDugme(String dugmeText) {
+        if(dugmeText.equals(red1kolona1.getText())){
+            return red1kolona1;
+        }
+        if(dugmeText.equals(red1kolona2.getText())){
+            return red1kolona2;
+        }
+        if(dugmeText.equals(red2kolona1.getText())){
+            return red2kolona1;
+        }
+        if(dugmeText.equals(red2kolona2.getText())){
+            return red2kolona2;
+        }
+        if(dugmeText.equals(red3kolona1.getText())){
+            return red3kolona1;
+        }
+        if(dugmeText.equals(red3kolona2.getText())){
+            return red3kolona2;
+        }
+        if(dugmeText.equals(red4kolona1.getText())){
+            return red4kolona1;
+        }
+        if(dugmeText.equals(red4kolona2.getText())){
+            return red4kolona2;
+        }
+        if(dugmeText.equals(red5kolona1.getText())){
+            return red5kolona1;
+        }
+        if(dugmeText.equals(red5kolona2.getText())){
+            return red5kolona2;
+        }
+
+        return null;
+    }
+
+
+    private void blockInput() {
+        IgreSlagalice.socket.emit("getTurn");
+        IgreSlagalice.socket.on("turn", args -> {
+            String username = args[0].toString();
+            if (getActivity() != null) {
+                setTrenutniIgrac(username);
+                getActivity().runOnUiThread(() -> {
+                    if (!username.equals(korisnickoImeLeviIgrac)) {
+                        disableTouchFragment.disableTouch();
+                    } else {
+                        disableTouchFragment.enableTouch();
+                    }
+
+                });
+            }
+        });
+    }
+
+    private void setTrenutniIgrac(String username){
+        trenutniIgrac = username;
     }
 
     private void omoguciPoljaUKoloni() {
@@ -457,6 +672,24 @@ public class SpojniceFragment extends Fragment {
         red3kolona2.setEnabled(true);
         red4kolona2.setEnabled(true);
         red5kolona2.setEnabled(true);
+    }
+
+    public void prikaziSpojniceFragment(Bundle bundle) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        SpojniceFragment spojniceFragment = new SpojniceFragment();
+        spojniceFragment.setArguments(bundle);
+        transaction.replace(R.id.igreSlagaliceContainer, spojniceFragment);
+        transaction.commit();
+    }
+
+    public void prikaziAsocijacijeFragment(Bundle bundle) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        AsocijacijeFragment asocijacijeFragment = new AsocijacijeFragment();
+        asocijacijeFragment.setArguments(bundle);
+        transaction.replace(R.id.igreSlagaliceContainer, asocijacijeFragment);
+        transaction.commit();
     }
 
 }

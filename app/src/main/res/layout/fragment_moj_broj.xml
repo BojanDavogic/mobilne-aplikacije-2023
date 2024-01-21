@@ -33,7 +33,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="0"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/zuta"/>
         </LinearLayout>
@@ -45,7 +45,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/circle_border"
             android:gravity="center"
-            android:text="60"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="30sp" />
     </RelativeLayout>

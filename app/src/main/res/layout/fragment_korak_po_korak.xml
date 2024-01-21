@@ -46,7 +46,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/circle_border"
             android:gravity="center"
-            android:text="70"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="30sp" />
     </RelativeLayout>

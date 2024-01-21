@@ -11,6 +11,7 @@ import android.widget.HorizontalScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -26,7 +27,11 @@ import com.example.slagalica.model.Prijatelj;
 import com.example.slagalica.pomocniAlati.PrijateljiAdapter;
 import com.example.slagalica.servisi.KorisnikServis;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import io.socket.client.Socket;
@@ -41,6 +46,9 @@ public class PocetniEkranFragment extends Fragment {
     private PrijateljiAdapter prijateljiAdapter;
     CardView cardView;
     Dialog popupDialog;
+
+    private String leviIgrac;
+    private String desniIgrac;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,22 +86,49 @@ public class PocetniEkranFragment extends Fragment {
                 Dialog popupDialog = new Dialog(getActivity());
                 popupDialog.setContentView(R.layout.loading_popup);
                 popupDialog.show();
-                Intent intent = new Intent(getActivity(), IgreSlagalice.class);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("korisnickoImeLeviIgrac", ulogovaniKorisnik.getKorisnickoIme());
-                bundle.putString("korisnickoImeDesniIgrac", "ImeDesnogIgraca");
-                bundle.putInt("poeniLeviIgrac", 0);
-                bundle.putInt("poeniDesniIgrac", 0);
-
-                // Postavite Bundle u Intent
-                intent.putExtras(bundle);
-
+                // Emitujte zahtev za pridruživanje igri
                 MainActivity.socket.emit("joinGame", ulogovaniKorisnik.getKorisnickoIme());
-                System.out.println("SOCKET " + socket);
-                startActivity(intent);
+                MainActivity.socket.on("playerJoined", args -> {
+                    leviIgrac = args[0].toString();
+                    desniIgrac = args[1].toString();
+                });
+                // Čekajte na događaj "startGame" da biste dobili informacije o protivniku
+                MainActivity.socket.on("startGame", args -> {
+                    if (args.length > 0 && args[0] instanceof JSONObject) {
+                        JSONObject data = (JSONObject) args[0];
+
+                        // Postavite informacije o levom igraču (trenutno ulogovanom korisniku)
+                        Bundle bundle = new Bundle();
+                        bundle.putString("korisnickoImeLeviIgrac", ulogovaniKorisnik.getKorisnickoIme());
+                        bundle.putInt("poeniLeviIgrac", 0);
+
+                        // Dobavljanje informacija o desnom igraču
+                        for (Iterator<String> it = data.keys(); it.hasNext();) {
+                            String socketId = it.next();
+                            try {
+                                String opponentUsername = data.getString(socketId);
+                                if (!opponentUsername.equals(ulogovaniKorisnik.getKorisnickoIme())) {
+                                    // Dodajte informacije o desnom igraču u Bundle
+                                    bundle.putString("korisnickoImeDesniIgrac", opponentUsername);
+                                    bundle.putInt("poeniDesniIgrac", 0);
+                                }
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                        // Postavite Bundle u Intent
+                        Intent intent = new Intent(getActivity(), IgreSlagalice.class);
+                        intent.putExtras(bundle);
+
+                        // Pokrenite aktivnost
+                        startActivity(intent);
+                    }
+                });
             }
         });
+
         return view;
     }
 

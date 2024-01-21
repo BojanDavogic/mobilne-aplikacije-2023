@@ -18,31 +18,48 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.slagalica.MainActivity;
 import com.example.slagalica.R;
+import com.example.slagalica.aktivnosti.IgreSlagalice;
+import com.example.slagalica.pomocniAlati.DisableTouchFragment;
 import com.example.slagalica.pomocniAlati.SharedData;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class AsocijacijeFragment extends Fragment {
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
-    TextView poeniLeviIgrac;
+public class AsocijacijeFragment extends Fragment {
+    DisableTouchFragment disableTouchFragment;
+
+    TextView poeniLevogIgraca;
+    TextView textUsernameRight;
+    TextView textPoeniLeft;
+    TextView textPoeniRight;
+
+    TextView textUsernameLeft;
 
     SharedData sharedData = SharedData.getInstance();
+    public static Socket socket;
     int prenetiPoeni = sharedData.getPoeniIgraca();
     public int poeniIgraca = 0;
 
@@ -67,29 +84,45 @@ public class AsocijacijeFragment extends Fragment {
     private Map<String, Object> polja = new HashMap<>();
     private Map<String, String> resenjaKolona = new HashMap<>();
     private String konacnoResenjee;
+
+    private int trenutniIgrac = 1;
+    String korisnickoImeLeviIgrac;
+    String korisnickoImeDesniIgrac;
+    int poeniLeviIgrac;
+    int poeniDesniIgrac;
+    int pokusaj = 1;
+//    private int runda = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_asocijacije, container, false);
+        disableTouchFragment = new DisableTouchFragment(requireContext());
 
         db = FirebaseFirestore.getInstance();
 
         Bundle bundle = getArguments();
-        if (bundle != null) {
-            String korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
-            String korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
-            int poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
-            int poeniDesniIgrac = bundle.getInt("poeniDesniIgrac", 0);
+        if (bundle != null && korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+            korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
+            korisnickoImeDesniIgrac = bundle.getString("korisnickoImeDesniIgrac", "");
+            poeniLeviIgrac = bundle.getInt("poeniLeviIgrac", 0);
+            poeniDesniIgrac = bundle.getInt("poeniDesniIgrac", 0);
 
-            TextView textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
-            TextView textUsernameRight = view.findViewById(R.id.korisnickoImeDesniIgrac);
-            TextView textPoeniLeft = view.findViewById(R.id.poeniLeviIgrac);
-            TextView textPoeniRight = view.findViewById(R.id.poeniDesniIgrac);
+            textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
+            textUsernameRight = view.findViewById(R.id.korisnickoImeDesniIgrac);
+            textPoeniLeft = view.findViewById(R.id.poeniLeviIgrac);
+            textPoeniRight = view.findViewById(R.id.poeniDesniIgrac);
 
             textUsernameLeft.setText(korisnickoImeLeviIgrac);
             textUsernameRight.setText(korisnickoImeDesniIgrac);
             textPoeniLeft.setText(String.valueOf(poeniLeviIgrac));
             textPoeniRight.setText(String.valueOf(poeniDesniIgrac));
+        } else {
+            ImageView desniIgracSlika = view.findViewById(R.id.desniIgracSlika);
+            desniIgracSlika.setImageResource(0);
+            textUsernameLeft = view.findViewById(R.id.korisnickoImeLeviIgrac);
+            textUsernameLeft.setText("Gost");
+            textPoeniLeft = view.findViewById(R.id.poeniLeviIgrac);
+            textPoeniLeft.setText(String.valueOf(prenetiPoeni));
         }
 
         tajmerTextView = view.findViewById(R.id.tajmer);
@@ -278,135 +311,280 @@ public class AsocijacijeFragment extends Fragment {
                 String unetoResenjeKoloneB = resenjeKoloneB.getText().toString().trim();
                 String unetoResenjeKoloneC = resenjeKoloneC.getText().toString().trim();
                 String unetoResenjeKoloneD = resenjeKoloneD.getText().toString().trim();
-
+                boolean konacnoTacno = false;
+                boolean tacnaKolona = false;
                 if (!unetoKonacnoResenje.isEmpty()) {
-                    proveriKonacnoResenje(unetoKonacnoResenje);
+                    konacnoTacno = proveriKonacnoResenje(unetoKonacnoResenje);
                 } if (!unetoResenjeKoloneA.isEmpty()) {
-                    proveriResenje("a", unetoResenjeKoloneA, resenjeKoloneA);
+                    tacnaKolona = proveriResenje("a", unetoResenjeKoloneA, resenjeKoloneA);
                 } if (!unetoResenjeKoloneB.isEmpty()) {
-                    proveriResenje("b", unetoResenjeKoloneB, resenjeKoloneB);
+                    tacnaKolona = proveriResenje("b", unetoResenjeKoloneB, resenjeKoloneB);
                 } if (!unetoResenjeKoloneC.isEmpty()) {
-                    proveriResenje("c", unetoResenjeKoloneC, resenjeKoloneC);
+                    tacnaKolona = proveriResenje("c", unetoResenjeKoloneC, resenjeKoloneC);
                 } if (!unetoResenjeKoloneD.isEmpty()) {
-                    proveriResenje("d", unetoResenjeKoloneD, resenjeKoloneD);
+                    tacnaKolona = proveriResenje("d", unetoResenjeKoloneD, resenjeKoloneD);
                 }
                 int poeni = 0;
-                if (proveriKonacnoResenje(unetoKonacnoResenje)) {
+                if (konacnoTacno) {
                     prenetiPoeni += 7;
                     poeni += 7;
+                    poeniLeviIgrac += 7;
 
                     if (poljeA1.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeA2.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeA3.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeA4.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (resenjeKoloneA.isEnabled()) {
                         prenetiPoeni += 2;
                         poeni += 2;
+                        poeniLeviIgrac += 2;
                     }
 
                     if (poljeB1.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeB2.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeB3.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeB4.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (resenjeKoloneB.isEnabled()) {
                         prenetiPoeni += 2;
                         poeni += 2;
+                        poeniLeviIgrac += 2;
                     }
 
                     if (poljeC1.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeC2.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeC3.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeC4.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (resenjeKoloneC.isEnabled()) {
                         prenetiPoeni += 2;
                         poeni += 2;
+                        poeniLeviIgrac += 2;
                     }
 
                     if (poljeD1.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeD2.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeD3.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (poljeD4.isEnabled()) {
                         prenetiPoeni += 1;
                         poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
                     if (resenjeKoloneD.isEnabled()) {
                         prenetiPoeni += 2;
                         poeni += 2;
+                        poeniLeviIgrac += 2;
+                    }
+                } else if (tacnaKolona) {
+                    if (poljeA1.isEnabled() && !unetoResenjeKoloneA.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
                     }
 
-                    int finalpoeni = poeni;
+                    if (poljeA2.isEnabled() && !unetoResenjeKoloneA.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
 
-                    poeniLeviIgrac.setText(String.valueOf(prenetiPoeni));
+                    if (poljeA3.isEnabled() && !unetoResenjeKoloneA.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeA4.isEnabled() && !unetoResenjeKoloneA.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (resenjeKoloneA.isEnabled() && !unetoResenjeKoloneA.isEmpty()) {
+                        prenetiPoeni += 2;
+                        poeni += 2;
+                        poeniLeviIgrac += 2;
+                    }
+
+                    if (poljeB1.isEnabled() && !unetoResenjeKoloneB.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeB2.isEnabled() && !unetoResenjeKoloneB.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeB3.isEnabled() && !unetoResenjeKoloneB.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeB4.isEnabled() && !unetoResenjeKoloneB.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (resenjeKoloneB.isEnabled()  && !unetoResenjeKoloneB.isEmpty()) {
+                        prenetiPoeni += 2;
+                        poeni += 2;
+                        poeniLeviIgrac += 2;
+                    }
+
+                    if (poljeC1.isEnabled() && !unetoResenjeKoloneC.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeC2.isEnabled() && !unetoResenjeKoloneC.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeC3.isEnabled() && !unetoResenjeKoloneC.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeC4.isEnabled() && !unetoResenjeKoloneC.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (resenjeKoloneC.isEnabled() && !unetoResenjeKoloneC.isEmpty()) {
+                        prenetiPoeni += 2;
+                        poeni += 2;
+                        poeniLeviIgrac += 2;
+                    }
+
+                    if (poljeD1.isEnabled() && !unetoResenjeKoloneD.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeD2.isEnabled() && !unetoResenjeKoloneD.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeD3.isEnabled() && !unetoResenjeKoloneD.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (poljeD4.isEnabled() && !unetoResenjeKoloneD.isEmpty()) {
+                        prenetiPoeni += 1;
+                        poeni += 1;
+                        poeniLeviIgrac += 1;
+                    }
+
+                    if (resenjeKoloneD.isEnabled()  && !unetoResenjeKoloneD.isEmpty()) {
+                        prenetiPoeni += 2;
+                        poeni += 2;
+                        poeniLeviIgrac += 2;
+                    }
+                }
+
+                int finalpoeni = poeni;
+
+                if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                    IgreSlagalice.socket.emit("asocijacijeScoreUpdate", korisnickoImeLeviIgrac, finalpoeni, korisnickoImeDesniIgrac, poeniDesniIgrac);
+                } else {
+                    textPoeniLeft.setText(String.valueOf(prenetiPoeni));
                     sharedData.setPoeniIgraca(prenetiPoeni);
 //                    tajmerIgra.cancel();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            prikaziObavestenje("Igra je zavrsena\nOsvojili ste " + finalpoeni + " poena\nSledeca igra pocinje za: ");
-                        }
-                    }, 3000);
-
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            prikaziObavestenje("Igra je zavrsena\nOsvojili ste " + finalpoeni + " poena\nSledeca igra pocinje za: ");
+//                        }
+//                    }, 3000);
                 }
             }
         });
@@ -416,6 +594,9 @@ public class AsocijacijeFragment extends Fragment {
     }
 
     private void pokreniTajmerIgre() {
+        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")){
+            blockInput();
+        }
         tajmerIgra = new CountDownTimer(trajanjeIgre, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -423,16 +604,46 @@ public class AsocijacijeFragment extends Fragment {
                 if (millisUntilFinished <= 10000) {
                     tajmerTextView.setTextColor(Color.RED);
                 }
+                if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                    IgreSlagalice.socket.on("scoreUpdate", args -> {
+                        if (args.length > 0 && args[0] instanceof JSONObject) {
+                            JSONObject data = (JSONObject) args[0];
+                            Log.println(Log.INFO, "args-score", Arrays.toString(args));
+                            try {
+                                for (Iterator<String> it = data.keys(); it.hasNext(); ) {
+                                    String playerName = it.next();
+                                    if (playerName.equals(korisnickoImeLeviIgrac)) {
+                                        poeniLeviIgrac = data.getInt(playerName);
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(() ->
+                                                    textPoeniLeft.setText(Integer.toString(poeniLeviIgrac)));
+                                        }
+                                    } else if (playerName.equals(korisnickoImeDesniIgrac)) {
+                                        poeniDesniIgrac = data.getInt(playerName);
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(() ->
+                                                    textPoeniRight.setText(Integer.toString(poeniDesniIgrac)));
+                                        }
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
             }
             @Override
             public void onFinish() {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        prikaziObavestenje("Vreme je isteklo\nOsvojili ste 0 bodova\nSledeca igra pocinje za:");
+                        prikaziObavestenje("Vreme je isteklo\nSledeca igra pocinje za:");
                         prikaziSvaPolja();
                         prikaziSvaResenjaKolona();
                         prikaziKonacnoResenje();
+
+
                     }
                 }, 2000);
             }
@@ -441,7 +652,86 @@ public class AsocijacijeFragment extends Fragment {
         tajmerIgra.start();
     }
 
+    @Override
+    public void onViewCreated(View view,Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+
+            IgreSlagalice.socket.on("asocijacijeOpen", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String openedField = args[0].toString();
+
+//                        if (polje.equals(openedField)) {
+                                String text = (String) polja.get(openedField);
+                                TextView button = getButtonForPolje(openedField);
+                                if (button != null && text != null) {
+                                    button.setText(text);
+                                    button.setVisibility(View.VISIBLE);
+                                }
+//                        }
+                            }
+                        });
+                    }
+                }
+            });
+
+            IgreSlagalice.socket.on("asocijacijeSolved", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String polje = args[0].toString();
+                                String resenjeKolone = args[1].toString();
+
+                                EditText resenje = getEditTextForPolje(polje);
+
+                                prikaziKolonu(polje);
+                                resenje.setText(resenjeKolone);
+                                resenje.setEnabled(false);
+//                            resenje.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+//                            resenje.setTextColor(Color.BLACK);
+                            }
+                        });
+                    }
+                }
+            });
+
+            IgreSlagalice.socket.on("asocijacijeKonacno", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String field = args[0].toString();
+                                prikaziKonacnoResenje();
+                                prikaziSvaPolja();
+                                prikaziSvaResenjaKolona();
+                                tajmerIgra.cancel();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        prikaziObavestenje("Igra je zavrsena\n " + "Sledeca igra pocinje za: ");
+                                    }
+                                }, 3000);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+
     private void prikaziObavestenje(String poruka) {
+        final int[] inverted = {0};
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Igra je zavrsena");
         builder.setMessage(poruka);
@@ -466,7 +756,34 @@ public class AsocijacijeFragment extends Fragment {
             @Override
             public void onFinish() {
                 dialog.dismiss();
-                prikaziSkockoFragment();
+                Bundle fragmentBundle = new Bundle();
+                if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                    if (((IgreSlagalice)getActivity()).getRunda() == 1) {
+                        ((IgreSlagalice)getActivity()).setRunda(2);
+                        fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);
+                        fragmentBundle.putString("korisnickoImeDesniIgrac", korisnickoImeDesniIgrac);
+                        fragmentBundle.putInt("poeniLeviIgrac", poeniLeviIgrac);
+                        fragmentBundle.putInt("poeniDesniIgrac", poeniDesniIgrac);
+                        prikaziAsocijacijeFragment(fragmentBundle);
+
+                        if ((poeniLeviIgrac > poeniDesniIgrac || (poeniLeviIgrac == poeniDesniIgrac &&
+                                korisnickoImeLeviIgrac.length() > korisnickoImeDesniIgrac.length())) && inverted[0] == 0) {
+                            inverted[0]++;
+                            IgreSlagalice.socket.emit("invert");
+                        }
+                        fragmentBundle.putInt("runda", ((IgreSlagalice)getActivity()).getRunda());
+                    } else {
+                        fragmentBundle.putString("korisnickoImeLeviIgrac", korisnickoImeLeviIgrac);
+                        fragmentBundle.putString("korisnickoImeDesniIgrac", korisnickoImeDesniIgrac);
+                        fragmentBundle.putInt("poeniLeviIgrac", poeniLeviIgrac);
+                        fragmentBundle.putInt("poeniDesniIgrac", poeniDesniIgrac);
+//                        prikaziSkockoFragment(fragmentBundle);
+                        prikaziBodoveObavestenje();
+                        ((IgreSlagalice)getActivity()).setRunda(1);
+                    }
+                } else {
+                    prikaziSkockoFragment(new Bundle());
+                }
             }
         };
 
@@ -484,38 +801,26 @@ public class AsocijacijeFragment extends Fragment {
         }
     }
 
+    private int currentIndex = 0;
+
     private void ucitajPoljaIzFirestore() {
         db.collection("asocijacije")
+                .document("kombinacija" + ((IgreSlagalice)getActivity()).getRunda())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        List<String> dokumenti = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            dokumenti.add(document.getId());
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Dokument postoji, možete pristupiti podacima
+                            polja = document.getData();
+                            resenjaKolona.put("a", polja.get("resenjeA").toString());
+                            resenjaKolona.put("b", polja.get("resenjeB").toString());
+                            resenjaKolona.put("c", polja.get("resenjeC").toString());
+                            resenjaKolona.put("d", polja.get("resenjeD").toString());
+                            konacnoResenjee = polja.get("konacnoResenje").toString();
+                        } else {
+                            Log.d(TAG, "Dokument ne postoji");
                         }
-                        int randomIndex = new Random().nextInt(dokumenti.size());
-                        String randomDokument = dokumenti.get(randomIndex);
-
-                        db.collection("asocijacije").document(randomDokument)
-                                .get()
-                                .addOnCompleteListener(task2 -> {
-                                    if (task2.isSuccessful()) {
-                                        DocumentSnapshot document2 = task2.getResult();
-                                        if (document2.exists()) {
-                                            polja = document2.getData();
-                                            resenjaKolona.put("a", polja.get("resenjeA").toString());
-                                            resenjaKolona.put("b", polja.get("resenjeB").toString());
-                                            resenjaKolona.put("c", polja.get("resenjeC").toString());
-                                            resenjaKolona.put("d", polja.get("resenjeD").toString());
-                                            konacnoResenjee = polja.get("konacnoResenje").toString();
-                                        } else {
-                                            Log.d(TAG, "Dokument ne postoji");
-                                        }
-                                    } else {
-                                        Log.e(TAG, "Greška prilikom dobavljanja dokumenata: ", task2.getException());
-                                    }
-                                });
                     } else {
                         Log.e(TAG, "Greška prilikom dobavljanja dokumenata: ", task.getException());
                     }
@@ -523,30 +828,63 @@ public class AsocijacijeFragment extends Fragment {
     }
 
     private void prikaziPolje(String polje) {
-        String text = (String) polja.get(polje);  // Dobijanje teksta za odabrano polje
-        TextView button = getButtonForPolje(polje);  // Dobijanje odgovarajućeg dugmeta za polje
-        if (button != null && text != null) {
-            button.setText(text);  // Postavljanje teksta na dugme
-            button.setVisibility(View.VISIBLE);  // Prikazivanje dugmeta
+        if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+            if (pokusaj > 0) {
+                IgreSlagalice.socket.emit("asocijacijeOpened", polje);
+            }
+            pokusaj = 0;
+        } else {
+            String text = (String) polja.get(polje);  // Dobijanje teksta za odabrano polje
+            TextView button = getButtonForPolje(polje);  // Dobijanje odgovarajućeg dugmeta za polje
+            if (button != null && text != null) {
+                button.setText(text);  // Postavljanje teksta na dugme
+                button.setVisibility(View.VISIBLE);  // Prikazivanje dugmeta
+
+            }
 
         }
     }
 
-    private void proveriResenje(String polje, String text, EditText resenje) {
+    private boolean proveriResenje(String polje, String text, EditText resenje) {
         String resenjeKolone = resenjaKolona.get(polje);
         String resenjeKoloneText = getResenjeKoloneText(polje);
 
         if (text.equalsIgnoreCase(resenjeKolone)) {
-            // Korisnik je pogodio resenje kolone
-            prikaziKolonu(polje);
-            resenje.setText(resenjeKolone);
-            resenje.setEnabled(false);
-            resenje.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-            resenje.setTextColor(Color.BLACK);
+            if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                IgreSlagalice.socket.emit("asocijacijeSolution", polje, resenjeKolone);
+            } else {
+                prikaziKolonu(polje);
+                resenje.setText(resenjeKolone);
+                resenje.setEnabled(false);
+//                resenje.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+//                resenje.setTextColor(Color.BLACK);
+            }
+            return true;
         } else {
+            pokusaj = 1;
+            if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                IgreSlagalice.socket.emit("getTurn");
+            }
             prikaziPoruku("Niste pogodili resenje");
             resenje.setText("");
             resenje.clearFocus();
+
+            return false;
+        }
+    }
+
+    private EditText getEditTextForPolje(String polje) {
+        switch (polje.charAt(0)) {
+            case 'a':
+                return getView().findViewById(R.id.resenjeKoloneA);
+            case 'b':
+                return getView().findViewById(R.id.resenjeKoloneB);
+            case 'c':
+                return getView().findViewById(R.id.resenjeKoloneC);
+            case 'd':
+                return getView().findViewById(R.id.resenjeKoloneD);
+            default:
+                return null;
         }
     }
 
@@ -569,7 +907,13 @@ public class AsocijacijeFragment extends Fragment {
         // Prikazivanje svih polja iz odabrane kolone
         for (String polje : polja.keySet()) {
             if (polje.startsWith(kolona)) {
-                prikaziPolje(polje);
+                String text = (String) polja.get(polje);  // Dobijanje teksta za odabrano polje
+                TextView button = getButtonForPolje(polje);  // Dobijanje odgovarajućeg dugmeta za polje
+                if (button != null && text != null) {
+                    button.setText(text);  // Postavljanje teksta na dugme
+                    button.setVisibility(View.VISIBLE);  // Prikazivanje dugmeta
+
+                }
             }
         }
     }
@@ -587,30 +931,36 @@ public class AsocijacijeFragment extends Fragment {
     private boolean proveriKonacnoResenje(String unetoResenje) {
 
         if (unetoResenje.equalsIgnoreCase(konacnoResenjee)) {
-            // Pogodak - prikazivanje svih polja i rešenja kolona
             tajmerIgra.cancel();
-            prikaziKonacnoResenje();
-            konacnoResenje.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-            konacnoResenje.setTextColor(Color.BLACK);
-            konacnoResenje.setEnabled(false);
-            resenjeKoloneA.setEnabled(false);
-            resenjeKoloneB.setEnabled(false);
-            resenjeKoloneC.setEnabled(false);
-            resenjeKoloneD.setEnabled(false);
-            prikaziSvaPolja();
-            prikaziSvaResenjaKolona();
-            resenjeKoloneA.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-            resenjeKoloneA.setTextColor(Color.BLACK);
-            resenjeKoloneB.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-            resenjeKoloneB.setTextColor(Color.BLACK);
-            resenjeKoloneC.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-            resenjeKoloneC.setTextColor(Color.BLACK);
-            resenjeKoloneD.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-            resenjeKoloneD.setTextColor(Color.BLACK);
             prikaziPoruku("Pogodili ste konacno resenje!");
-//            prikaziObavestenje("Pogodili ste konacno resenje");
+
+            if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                MainActivity.socket.emit("asocijacijeKonacnoResenje", konacnoResenjee);
+            } else {
+                resenjeKoloneA.setEnabled(false);
+                resenjeKoloneB.setEnabled(false);
+                resenjeKoloneC.setEnabled(false);
+                resenjeKoloneD.setEnabled(false);
+                prikaziKonacnoResenje();
+                prikaziSvaPolja();
+                prikaziSvaResenjaKolona();
+
+                tajmerIgra.cancel();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        prikaziObavestenje("Igra je zavrsena\n " + "Sledeca igra pocinje za: ");
+                    }
+                }, 3000);
+            }
+
+
             return true;
         } else {
+            pokusaj = 1;
+            if(korisnickoImeLeviIgrac != null && !korisnickoImeLeviIgrac.equals("")) {
+                IgreSlagalice.socket.emit("getTurn");
+            }
             prikaziPoruku("Niste pogodili konacno resenje!");
             konacnoResenje.setText("");
             return false;
@@ -625,7 +975,13 @@ public class AsocijacijeFragment extends Fragment {
 
     private void prikaziSvaPolja() {
         for (String polje : polja.keySet()) {
-            prikaziPolje(polje);
+            String text = (String) polja.get(polje);  // Dobijanje teksta za odabrano polje
+            TextView button = getButtonForPolje(polje);  // Dobijanje odgovarajućeg dugmeta za polje
+            if (button != null && text != null) {
+                button.setText(text);  // Postavljanje teksta na dugme
+                button.setVisibility(View.VISIBLE);  // Prikazivanje dugmeta
+
+            }
         }
     }
 
@@ -648,10 +1004,65 @@ public class AsocijacijeFragment extends Fragment {
 
     }
 
-    public void prikaziSkockoFragment() {
+    private void blockInput() {
+        IgreSlagalice.socket.emit("getTurn");
+        IgreSlagalice.socket.on("turn", args -> {
+            String username = args[0].toString();
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (!username.equals(korisnickoImeLeviIgrac)) {
+                        disableTouchFragment.disableTouch();
+//                    getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//                    Toast.makeText(getActivity(), "Unos nije dozvoljen. Sacekaj tvoj red!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Odblokiranje unosa
+                        disableTouchFragment.enableTouch();
+//                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//                    Toast.makeText(getActivity(), "Unos dozvoljen. Tvoj red!", Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+            }
+        });
+    }
+
+
+    public void prikaziSkockoFragment(Bundle bundle) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.igreSlagaliceContainer, new SkockoFragment());
+        SkockoFragment skockoFragment = new SkockoFragment();
+        skockoFragment.setArguments(bundle);
+        transaction.replace(R.id.igreSlagaliceContainer, skockoFragment);
         transaction.commit();
+    }
+
+    public void prikaziAsocijacijeFragment(Bundle bundle) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        AsocijacijeFragment asocijacijeFragment = new AsocijacijeFragment();
+        asocijacijeFragment.setArguments(bundle);
+        transaction.replace(R.id.igreSlagaliceContainer, asocijacijeFragment);
+        transaction.commit();
+    }
+
+    private void prikaziBodoveObavestenje() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Osvojeni bodovi");
+        builder.setMessage("Osvojili ste ukupno " + poeniLevogIgraca + " poena.");
+
+        builder.setPositiveButton("Ok", (dialog, which) -> {
+            idiNaPocetniEkran(new Bundle());
+        });
+
+        builder.setCancelable(false);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void idiNaPocetniEkran(Bundle bundle) {
+        PocetniEkranFragment pocetniEkranFragment = new PocetniEkranFragment();
+        pocetniEkranFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.igreSlagaliceContainer, pocetniEkranFragment).commit();
     }
 }
