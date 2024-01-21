@@ -52,6 +52,7 @@ public class IgreSlagalice extends AppCompatActivity {
         KoZnaZnaFragment koZnaZnaFragment = new KoZnaZnaFragment();
         SpojniceFragment spojniceFragment = new SpojniceFragment();
         AsocijacijeFragment asocijacijeFragment = new AsocijacijeFragment();
+        MojBrojFragment mojBrojFragment = new MojBrojFragment();
 
         if (bundle != null) {
             String korisnickoImeLeviIgrac = bundle.getString("korisnickoImeLeviIgrac", "");
@@ -70,7 +71,7 @@ public class IgreSlagalice extends AppCompatActivity {
             asocijacijeFragment.setArguments(fragmentBundle);
 
         }
-        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, koZnaZnaFragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.igreSlagaliceContainer, mojBrojFragment).commitAllowingStateLoss();
 
     }
 }

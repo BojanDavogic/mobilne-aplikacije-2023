@@ -3,8 +3,13 @@ package com.example.slagalica.fragmenti;
 import static android.content.ContentValues.TAG;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -41,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class MojBrojFragment extends Fragment {
+public class MojBrojFragment extends Fragment implements SensorEventListener {
 
     private TextView poeniLeviIgrac;
 
@@ -103,6 +108,10 @@ public class MojBrojFragment extends Fragment {
 
     private int brojacBtnStop = 0;
 
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private static final float SHAKE_THRESHOLD = 10f;
+    private long lastShakeTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -158,6 +167,20 @@ public class MojBrojFragment extends Fragment {
         };
 
         handlerTrocifreni.postDelayed(rotirajRunnableTrocifreni, 0);
+
+        sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager != null) {
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            if (accelerometer != null) {
+                sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            } else {
+                // Vaš uređaj ne podržava senzor za accelerometer
+                Toast.makeText(requireContext(), "Uređaj ne podržava senzor za accelerometer.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Vaš uređaj ne podržava senzor servis
+            Toast.makeText(requireContext(), "Uređaj ne podržava senzor servis.", Toast.LENGTH_SHORT).show();
+        }
 
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -645,6 +668,9 @@ public class MojBrojFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
         if (tajmerIgra != null) {
             tajmerIgra.cancel();
         }
@@ -763,5 +789,34 @@ public class MojBrojFragment extends Fragment {
     private void idiNaPocetniEkran(Bundle bundle) {
         Intent intent = new Intent(getActivity(), GostActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            detectShake(event);
+        }
+    }
+
+    private void detectShake(SensorEvent event) {
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - lastShakeTime) > 1000) {
+            long diffTime = currentTime - lastShakeTime;
+            lastShakeTime = currentTime;
+
+            float speed = Math.abs(x + y + z) / diffTime * 10000;
+
+            if (speed > SHAKE_THRESHOLD) {
+                btnStop.performClick();
+            }
+        }
     }
 }
